@@ -127,6 +127,7 @@ public class Login extends JFrame {
 	}
 
 	private void resgistrarEventos() {
+		
 		btnClose.addActionListener(new ActionListener() {
 
 			@Override
@@ -135,6 +136,18 @@ public class Login extends JFrame {
 
 			}
 		});
+		
+		btnLogin.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GestionAlmi.setVisible(true);
+
+			}
+		});
+		
+
+		
 		txtpnUser.addMouseListener(new MouseAdapter() {
 
 			@Override
