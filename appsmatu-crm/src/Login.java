@@ -1,37 +1,36 @@
-import java.awt.BorderLayout;
-import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.Graphics;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
-
-import com.mysql.fabric.xmlrpc.base.Array;
-
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-import java.awt.GridBagLayout;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Base64;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JTextPane;
-import java.awt.Font;
+import javax.swing.JEditorPane;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+
+
 
 public class Login extends JFrame {
 
@@ -42,10 +41,12 @@ public class Login extends JFrame {
 	private JLabel label;
 	private JPasswordField txtpnPassword;
 	private JTextField txtpnUser;
-	private JButton btnNewButton;
 	private String plainPassword;
 	private JButton btnClose;
 	private JButton btnLogin;
+	private String user;
+	private String password;
+	private JLabel lblWeb;
 
 
 	/**
@@ -56,7 +57,6 @@ public class Login extends JFrame {
 			public void run() {
 				try {
 					Login frame = new Login();
-
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -69,9 +69,8 @@ public class Login extends JFrame {
 	 * Create the frame.
 	 */
 	public Login() {
-		fondoLogin = new ImageIcon(getClass().getResource("login.png"));
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		fondoLogin = new ImageIcon(getClass().getResource("login.png"));
 		setUndecorated(true);
 		setBounds(450, 300, 500, 300);
 		contentPane = new JPanel();
@@ -85,17 +84,23 @@ public class Login extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		btnLogin = new JButton("Login");
+		btnLogin.setForeground(SystemColor.menu);
 		btnLogin.setBounds(258, 207, 89, 23);
+		btnLogin.setBorder(null);
+		btnLogin.setBackground(Color.DARK_GRAY);
 		panel.add(btnLogin);
 
 		btnClose = new JButton("Close");
+		btnClose.setForeground(SystemColor.menu);
 		btnClose.setBounds(370, 207, 89, 23);
+		btnClose.setBorder(null);
+		btnClose.setBackground(Color.DARK_GRAY);
 		panel.add(btnClose);
 
-		btnNewButton = new JButton("New button");
-		btnNewButton.setBounds(10, 73, 195, 139);
-		btnNewButton.setVisible(false);
-		panel.add(btnNewButton);
+		lblWeb = new JLabel();
+
+		lblWeb.setBounds(10, 73, 195, 139);
+		panel.add(lblWeb);
 
 		txtpnUser = new JTextField();
 		txtpnUser.setEditable(false);
@@ -121,33 +126,40 @@ public class Login extends JFrame {
 		label.setIcon(new ImageIcon(getClass().getResource("login.png")));
 
 		resgistrarEventos();
-
-
-
 	}
 
 	private void resgistrarEventos() {
-		
+		lblWeb.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				openWeb(arg0);
+			}
+		});
 		btnClose.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
-
 			}
 		});
-		
+
 		btnLogin.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GestionAlmi.setVisible(true);
+
+				if(login()){
+					Login.this.setVisible(false);
+					GestionAlmi.main(null);
+				}
+
+
 
 			}
 		});
-		
 
-		
+
+
 		txtpnUser.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -161,11 +173,11 @@ public class Login extends JFrame {
 					txtpnPassword.setForeground(Color.BLACK);
 				}
 			}
-
 		});
 
 
 		txtpnPassword.addMouseListener(new MouseAdapter() {
+			
 
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -177,9 +189,7 @@ public class Login extends JFrame {
 					txtpnPassword.setText("");
 					txtpnPassword.setForeground(Color.BLACK);
 				}
-
 			}
-
 		});
 		txtpnUser.addKeyListener(new KeyAdapter() {
 
@@ -206,6 +216,19 @@ public class Login extends JFrame {
 			}
 		});
 	}
+	public boolean login() {
+		user = "nekane";
+
+		if(user.equals(txtpnUser.getText())){
+			return true;
+		}else{
+
+			JOptionPane.showMessageDialog(this, "Usuario o contraseña no válidos");
+			txtpnUser.setText("");
+			return false;
+		}
+	}
+
 	public static String sha256(String password) {
 		try{
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -217,4 +240,17 @@ public class Login extends JFrame {
 			throw new RuntimeException(ex);
 		}
 	}
+
+
+	private void openWeb(MouseEvent arg0) {                                         
+		try { 
+			String url = "https://www.almi.eus";
+			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
+		}
+		catch (java.io.IOException e) {
+			System.out.println(e.getMessage());
+		}
+	}    
+
+
 }
