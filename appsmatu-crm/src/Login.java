@@ -57,6 +57,7 @@ public class Login extends JFrame {
 			public void run() {
 				try {
 					Login frame = new Login();
+					
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -147,19 +148,17 @@ public class Login extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				if(login()){
+				/*
+				System.out.println(digest("SHA-256", "Almi123"));
+				System.out.println(String.valueOf(txtpnPassword.getPassword()));
+				System.out.println(digest("SHA-256", String.valueOf(txtpnPassword.getPassword())));
+				 */
+				if(login(txtpnUser.getText().toString(), digest("SHA-256", String.valueOf(txtpnPassword.getPassword())))){
 					Login.this.setVisible(false);
 					GestionAlmi.main(null);
 				}
-
-
-
 			}
 		});
-
-
-
 		txtpnUser.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -177,7 +176,7 @@ public class Login extends JFrame {
 
 
 		txtpnPassword.addMouseListener(new MouseAdapter() {
-			
+
 
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -216,28 +215,20 @@ public class Login extends JFrame {
 			}
 		});
 	}
-	public boolean login() {
-		user = "nekane";
 
-		if(user.equals(txtpnUser.getText())){
+
+	public boolean login(String user, String passwd) {
+		BaseDatos.getBBDD().conectar();
+
+		if(BaseDatos.getBBDD().loginUser(user, passwd)){
+			BaseDatos.getBBDD().desconectar();
 			return true;
 		}else{
-
+			BaseDatos.getBBDD().desconectar();
 			JOptionPane.showMessageDialog(this, "Usuario o contraseña no válidos");
 			txtpnUser.setText("");
+			txtpnPassword.setText("");
 			return false;
-		}
-	}
-
-	public static String sha256(String password) {
-		try{
-			MessageDigest digest = MessageDigest.getInstance("SHA-256");
-			byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
-			String encoded = Base64.getEncoder().encodeToString(hash);
-
-			return encoded;
-		} catch(Exception ex){
-			throw new RuntimeException(ex);
 		}
 	}
 
@@ -251,6 +242,28 @@ public class Login extends JFrame {
 			System.out.println(e.getMessage());
 		}
 	}    
+	
+	//CON ESTO CODIFICAMOS LA CONTRASEÑA EN SHA-256 PARA COMPARARLA CON LA ALMACENADA EN LA BBDD
+	private static String encodeHex(byte[] digest) {
+	    StringBuilder sb = new StringBuilder();
+	    for (int i = 0; i < digest.length; i++) {
+	        sb.append(Integer.toString((digest[i] & 0xff) + 0x100, 16).substring(1));
+	    }
+	    return sb.toString();
+	}
+	
+	public static String digest(String alg, String input) {
+	    try {
+	        MessageDigest md = MessageDigest.getInstance(alg);
+	        byte[] buffer = input.getBytes("UTF-8");
+	        md.update(buffer);
+	        byte[] digest = md.digest();
+	        return encodeHex(digest);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return e.getMessage();
+	    }
+	}
 
 
 }

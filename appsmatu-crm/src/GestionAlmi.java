@@ -407,9 +407,8 @@ public class GestionAlmi extends JFrame {
 	}
 
 	private void inicializar(){
-		bd = new BaseDatos("sarabaras");
-		bd.conectar();
-		rs = bd.obtenerDatos();
+		BaseDatos.getBBDD().conectar();
+		rs = BaseDatos.getBBDD().obtenerDatos();
 		try {
 			if(rs.first()){
 				//comboBox_tablas.addItem(rs.getString("idPerfil"));
@@ -425,3 +424,4 @@ public class GestionAlmi extends JFrame {
 
 	}
 }
+
