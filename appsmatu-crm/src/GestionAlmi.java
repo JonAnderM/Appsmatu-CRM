@@ -44,6 +44,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.event.ActionEvent;
@@ -77,6 +78,13 @@ public class GestionAlmi extends JFrame {
 	private JMenuBar menuBar;
 	protected int my;
 	protected int mx;
+	private JButton btnAlumnos;
+	private JButton btnAsignaturas;
+	private JButton btnCursos;
+	private JButton btnDocentes;
+	private JButton btnNoticias;
+	private JButton btnOpciones;
+	private Image darkGray;
 	/**
 	 * Launch the application.
 	 */
@@ -119,6 +127,7 @@ public class GestionAlmi extends JFrame {
 		circMinimizar = new ImageIcon(getClass().getResource("minimizar.png")).getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 		clarSalir = new ImageIcon(getClass().getResource("salirCla.png")).getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 		clarMinimizar = new ImageIcon(getClass().getResource("minimizarCla.png")).getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+		darkGray = new ImageIcon(getClass().getResource("Dark-Grey.jpg")).getImage();
 		/*
 		JPanel authorization = new JPanel();
 		authorization.add(new JLabel ("test"));
@@ -137,6 +146,9 @@ public class GestionAlmi extends JFrame {
 		mnNewMenu.setFont(new Font("Arial Unicode MS", Font.PLAIN, 12));
 		mnNewMenu.setBounds(0, 0, 50, 50);
 		menuBar.add(mnNewMenu);
+		
+		JButton btnCerrarSesion = new JButton("Cerrar sesion");
+		mnNewMenu.add(btnCerrarSesion);
 
 		JMenu mnNewMenu_1 = new JMenu("Propiedades");
 		mnNewMenu_1.setFont(new Font("Arial Unicode MS", Font.PLAIN, 12));
@@ -150,12 +162,12 @@ public class GestionAlmi extends JFrame {
 		Component horizontalStrut = Box.createHorizontalStrut(872);
 		menuBar.add(horizontalStrut);
 
-		JLabel lblNewLabel = new JLabel("Sesi\u00F3n: ");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		menuBar.add(lblNewLabel);
+		JLabel lblSesion = new JLabel("Sesi\u00F3n: ");
+		lblSesion.setHorizontalAlignment(SwingConstants.RIGHT);
+		menuBar.add(lblSesion);
 
-		JLabel lblNekane = new JLabel("Nekane");
-		menuBar.add(lblNekane);
+		JLabel lblNombreUsu = new JLabel("Nekane");
+		menuBar.add(lblNombreUsu);
 
 		btnSalir = new JButton("");
 		btnSalir.setVerticalAlignment(SwingConstants.BOTTOM);
@@ -232,21 +244,6 @@ public class GestionAlmi extends JFrame {
 					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
 					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
 					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
 				},
 				new String[] {
 						"New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column"
@@ -283,53 +280,65 @@ public class GestionAlmi extends JFrame {
 		panel.add(label);
 		label.setIcon(new ImageIcon(almi));
 
-		JLabel lblPerfiles = new JLabel("Alumnos");
-		lblPerfiles.setForeground(Color.WHITE);
-		lblPerfiles.setOpaque(true);
-		lblPerfiles.setBackground(Color.DARK_GRAY);
-		lblPerfiles.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPerfiles.setBounds(0, 248, 311, 70);
-		panel.add(lblPerfiles);
+		btnAlumnos = new JButton("Alumnos");
+		btnAlumnos.setForeground(Color.WHITE);
+		btnAlumnos.setOpaque(true);
+		btnAlumnos.setContentAreaFilled(false);
+		btnAlumnos.setBorder(null);
+		btnAlumnos.setBackground(SystemColor.controlDkShadow);
+		btnAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
+		btnAlumnos.setBounds(0, 248, 311, 70);
+		panel.add(btnAlumnos);
 
-		JLabel lblAsignaturas = new JLabel("Asignaturas");
-		lblAsignaturas.setForeground(Color.WHITE);
-		lblAsignaturas.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAsignaturas.setBounds(0, 317, 311, 70);
-		lblAsignaturas.setOpaque(true);
-		lblAsignaturas.setBackground(lblPerfiles.getBackground());
-		panel.add(lblAsignaturas);
+		btnAsignaturas = new JButton("Asignaturas");
+		btnAsignaturas.setForeground(Color.WHITE);
+		btnAsignaturas.setHorizontalAlignment(SwingConstants.CENTER);
+		btnAsignaturas.setBounds(0, 317, 311, 70);
+		btnAsignaturas.setBackground(SystemColor.controlDkShadow);
+		btnAsignaturas.setContentAreaFilled(false);
+		btnAsignaturas.setBorder(null);
+		btnAsignaturas.setOpaque(true);
+		panel.add(btnAsignaturas);
 
-		JLabel lblNoticias = new JLabel("Cursos");
-		lblNoticias.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNoticias.setForeground(Color.WHITE);
-		lblNoticias.setBounds(0, 387, 311, 70);
-		lblNoticias.setOpaque(true);
-		lblNoticias.setBackground(lblPerfiles.getBackground());
-		panel.add(lblNoticias);
+		btnCursos = new JButton("Cursos");
+		btnCursos.setHorizontalAlignment(SwingConstants.CENTER);
+		btnCursos.setForeground(Color.WHITE);
+		btnCursos.setBackground(SystemColor.controlDkShadow);
+		btnCursos.setContentAreaFilled(false);
+		btnCursos.setBorder(null);
+		btnCursos.setBounds(0, 387, 311, 70);
+		btnCursos.setOpaque(true);
+		panel.add(btnCursos);
 
-		JLabel lblDocentes = new JLabel("Docentes");
-		lblDocentes.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDocentes.setForeground(Color.WHITE);
-		lblDocentes.setBounds(0, 457, 311, 70);
-		lblDocentes.setOpaque(true);
-		lblDocentes.setBackground(lblPerfiles.getBackground());
-		panel.add(lblDocentes);
+		btnDocentes = new JButton("Docentes");
+		btnDocentes.setBackground(SystemColor.controlDkShadow);
+		btnDocentes.setHorizontalAlignment(SwingConstants.CENTER);
+		btnDocentes.setForeground(Color.WHITE);
+		btnDocentes.setBounds(0, 457, 311, 70);
+		btnDocentes.setContentAreaFilled(false);
+		btnDocentes.setBorder(null);
+		btnDocentes.setOpaque(true);
+		panel.add(btnDocentes);
 
-		JLabel lblNoticias_1 = new JLabel("Noticias");
-		lblNoticias_1.setOpaque(true);
-		lblNoticias_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNoticias_1.setForeground(Color.WHITE);
-		lblNoticias_1.setBackground(Color.DARK_GRAY);
-		lblNoticias_1.setBounds(0, 527, 311, 70);
-		panel.add(lblNoticias_1);
+		btnNoticias = new JButton("Noticias");
+		btnNoticias.setOpaque(true);
+		btnNoticias.setContentAreaFilled(false);
+		btnNoticias.setBorder(null);
+		btnNoticias.setHorizontalAlignment(SwingConstants.CENTER);
+		btnNoticias.setForeground(Color.WHITE);
+		btnNoticias.setBackground(SystemColor.controlDkShadow);
+		btnNoticias.setBounds(0, 527, 311, 70);
+		panel.add(btnNoticias);
 
-		JLabel lblOtrasTablas = new JLabel("Otras tablas...");
-		lblOtrasTablas.setOpaque(true);
-		lblOtrasTablas.setHorizontalAlignment(SwingConstants.CENTER);
-		lblOtrasTablas.setForeground(Color.WHITE);
-		lblOtrasTablas.setBackground(Color.DARK_GRAY);
-		lblOtrasTablas.setBounds(0, 597, 311, 70);
-		panel.add(lblOtrasTablas);
+		btnOpciones = new JButton("M\u00E1s opciones...");
+		btnOpciones.setOpaque(true);
+		btnOpciones.setContentAreaFilled(false);
+		btnOpciones.setBorder(null);
+		btnOpciones.setHorizontalAlignment(SwingConstants.CENTER);
+		btnOpciones.setForeground(Color.WHITE);
+		btnOpciones.setBackground(SystemColor.controlDkShadow);
+		btnOpciones.setBounds(0, 597, 311, 70);
+		panel.add(btnOpciones);
 
 		JButton btnEnviar = new JButton("A\u00F1adir");
 		btnEnviar.setForeground(Color.WHITE);
@@ -348,7 +357,13 @@ public class GestionAlmi extends JFrame {
 		shadowPane.setBounds(0, 0, 1280, 720);
 		contentPane.add(shadowPane);
 		shadowPane.setLayout(null);
-
+		
+		btnAlumnos.setRolloverIcon(new ImageIcon(darkGray));
+		btnAsignaturas.setRolloverIcon(new ImageIcon(darkGray));
+		btnCursos.setRolloverIcon(new ImageIcon(darkGray));
+		btnDocentes.setRolloverIcon(new ImageIcon(darkGray));
+		btnNoticias.setRolloverIcon(new ImageIcon(darkGray));
+		btnOpciones.setRolloverIcon(new ImageIcon(darkGray));
 		registrarEventos();
 		//inicializar();
 		//mostrarTabla();
@@ -356,11 +371,8 @@ public class GestionAlmi extends JFrame {
 
 	private void registrarEventos() {
 		btnSalir.addActionListener(new ActionListener() {
-
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);
-
 			}
 		});
 		btnMinimizar.addActionListener(new ActionListener() {
@@ -369,29 +381,15 @@ public class GestionAlmi extends JFrame {
 			}
 		});
 		menuBar.addMouseListener(new MouseAdapter() {
-
-
-
-			@Override
 			public void mousePressed(MouseEvent arg0) {
 				mx = arg0.getX();
 				my = arg0.getY();
-
 			}
-
 		});
-		menuBar.addMouseMotionListener(new MouseMotionListener() {
+		menuBar.addMouseMotionListener(new MouseMotionAdapter() {
 
-			@Override
-			public void mouseMoved(MouseEvent e) {
-
-
-			}
-
-			@Override
 			public void mouseDragged(MouseEvent e) {
 				GestionAlmi.this.setLocation(e.getXOnScreen()-mx,e.getYOnScreen()-my);
-
 			}
 		});
 

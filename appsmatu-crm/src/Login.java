@@ -35,17 +35,11 @@ import javax.swing.event.HyperlinkListener;
 public class Login extends JFrame {
 
 	private JPanel contentPane;
-	private Character passChar[];
-	private ImageIcon fondoLogin;
-	private Graphics g;
 	private JLabel label;
 	private JPasswordField txtpnPassword;
 	private JTextField txtpnUser;
-	private String plainPassword;
 	private JButton btnClose;
 	private JButton btnLogin;
-	private String user;
-	private String password;
 	private JLabel lblWeb;
 
 
@@ -70,8 +64,7 @@ public class Login extends JFrame {
 	 * Create the frame.
 	 */
 	public Login() {
-
-		fondoLogin = new ImageIcon(getClass().getResource("login.png"));
+		
 		setUndecorated(true);
 		setBounds(450, 300, 500, 300);
 		contentPane = new JPanel();
@@ -118,7 +111,7 @@ public class Login extends JFrame {
 		panel.add(txtpnPassword);
 		txtpnPassword.setEditable(false);
 		txtpnPassword.setForeground(Color.GRAY);
-		plainPassword = new String();
+
 
 
 		label = new JLabel("");
@@ -131,22 +124,16 @@ public class Login extends JFrame {
 
 	private void resgistrarEventos() {
 		lblWeb.addMouseListener(new MouseAdapter() {
-			@Override
 			public void mousePressed(MouseEvent arg0) {
 				openWeb(arg0);
 			}
 		});
 		btnClose.addActionListener(new ActionListener() {
-
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}
 		});
-
 		btnLogin.addActionListener(new ActionListener() {
-
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				/*
 				System.out.println(digest("SHA-256", "Almi123"));
@@ -160,8 +147,6 @@ public class Login extends JFrame {
 			}
 		});
 		txtpnUser.addMouseListener(new MouseAdapter() {
-
-			@Override
 			public void mousePressed(MouseEvent e) {
 				if(!txtpnUser.isEditable()){
 					txtpnUser.setEditable(true);
@@ -176,9 +161,6 @@ public class Login extends JFrame {
 
 
 		txtpnPassword.addMouseListener(new MouseAdapter() {
-
-
-			@Override
 			public void mousePressed(MouseEvent e) {
 				if(!txtpnPassword.isEditable()){
 					txtpnUser.setEditable(true);
@@ -190,9 +172,9 @@ public class Login extends JFrame {
 				}
 			}
 		});
+		
+//AQUI SE CONTROLA QUE CADA VEZ QUE SE PULSE EL TABULADOR, ALTERNE EL JTEXTFIELD
 		txtpnUser.addKeyListener(new KeyAdapter() {
-
-			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_TAB){
 					txtpnPassword.grabFocus();
@@ -205,8 +187,6 @@ public class Login extends JFrame {
 			}
 		});
 		txtpnPassword.addKeyListener(new KeyAdapter() {
-
-			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_TAB){
 					txtpnUser.grabFocus();
@@ -216,7 +196,7 @@ public class Login extends JFrame {
 		});
 	}
 
-
+//CONTROLA SI EL USUARIO Y CONTRASEÑA COINCIDEN CON LOS DE LA BBDD
 	public boolean login(String user, String passwd) {
 		BaseDatos.getBBDD().conectar();
 
@@ -232,7 +212,7 @@ public class Login extends JFrame {
 		}
 	}
 
-
+//FUNCION PARA ABRIR LA PAGINA DE ALMI CUANDO SE CLICKA EN EL LOGO
 	private void openWeb(MouseEvent arg0) {                                         
 		try { 
 			String url = "https://www.almi.eus";
@@ -243,7 +223,7 @@ public class Login extends JFrame {
 		}
 	}    
 	
-	//CON ESTO CODIFICAMOS LA CONTRASEÑA EN SHA-256 PARA COMPARARLA CON LA ALMACENADA EN LA BBDD
+//CON ESTO CODIFICAMOS LA CONTRASEÑA EN SHA-256 PARA COMPARARLA CON LA ALMACENADA EN LA BBDD
 	private static String encodeHex(byte[] digest) {
 	    StringBuilder sb = new StringBuilder();
 	    for (int i = 0; i < digest.length; i++) {
@@ -264,6 +244,5 @@ public class Login extends JFrame {
 	        return e.getMessage();
 	    }
 	}
-
 
 }
