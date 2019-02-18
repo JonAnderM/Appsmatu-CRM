@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JTabbedPane;
 import javax.swing.border.LineBorder;
@@ -28,6 +29,9 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JWindow;
 import javax.swing.table.DefaultTableModel;
+
+import com.mysql.fabric.xmlrpc.base.Array;
+
 import javax.swing.JScrollBar;
 import java.awt.SystemColor;
 import javax.swing.SwingConstants;
@@ -85,7 +89,6 @@ public class GestionAlmi extends JFrame {
 	private JButton btnCursos;
 	private JButton btnDocentes;
 	private JButton btnOpciones;
-	private Image darkGrey;
 	private JButton btnNoticia;
 	private JButton btnCerrarSesion;
 	private JButton btnRegistro;
@@ -93,6 +96,7 @@ public class GestionAlmi extends JFrame {
 	private JPasswordField passwordField;
 	private JPanel panelRegistro;
 	private JButton btnCerrarReg;
+	private ArrayList<JButton> tablas;
 	private PanelModificaciones PanelModificaciones;
 
 	/**
@@ -200,8 +204,6 @@ public class GestionAlmi extends JFrame {
 		btnMinimizar.setIcon(new ImageIcon(clarMinimizar));
 		btnMinimizar.setRolloverIcon(new ImageIcon(circMinimizar));
 
-
-
 		Component horizontalStrut_1 = Box.createHorizontalStrut(12);
 		menuBar.add(horizontalStrut_1);
 		menuBar.add(btnSalir);
@@ -258,91 +260,27 @@ public class GestionAlmi extends JFrame {
 		label.setIcon(new ImageIcon(almi));
 
 		btnAlumnos = new JButton("Alumnos");
-		btnAlumnos.setForeground(Color.WHITE);
-		btnAlumnos.setBackground(SystemColor.controlDkShadow);
-		btnAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
 		btnAlumnos.setBounds(0, 198, 311, 70);
-		btnAlumnos.setContentAreaFilled(false);
-		btnAlumnos.setBorder(null);
-		btnAlumnos.setOpaque(true);
-		panel.add(btnAlumnos);
 
 		btnAsignaturas = new JButton("Asignaturas");
-		btnAsignaturas.setForeground(Color.WHITE);
-		btnAsignaturas.setHorizontalAlignment(SwingConstants.CENTER);
 		btnAsignaturas.setBounds(0, 267, 311, 70);
-		btnAsignaturas.setBackground(SystemColor.controlDkShadow);
-		btnAsignaturas.setContentAreaFilled(false);
-		btnAsignaturas.setBorder(null);
-		btnAsignaturas.setOpaque(true);
-		panel.add(btnAsignaturas);
 
 		btnCursos = new JButton("Cursos");
-		btnCursos.setHorizontalAlignment(SwingConstants.CENTER);
-		btnCursos.setForeground(Color.WHITE);
-		btnCursos.setBackground(SystemColor.controlDkShadow);
-		btnCursos.setContentAreaFilled(false);
-		btnCursos.setBorder(null);
 		btnCursos.setBounds(0, 337, 311, 70);
-		btnCursos.setOpaque(true);
-		panel.add(btnCursos);
 
 		btnDocentes = new JButton("Docentes");
-		btnDocentes.setBackground(SystemColor.controlDkShadow);
-		btnDocentes.setHorizontalAlignment(SwingConstants.CENTER);
-		btnDocentes.setForeground(Color.WHITE);
 		btnDocentes.setBounds(0, 407, 311, 70);
-		btnDocentes.setContentAreaFilled(false);
-		btnDocentes.setBorder(null);
-		btnDocentes.setOpaque(true);
-		panel.add(btnDocentes);
 
 		btnNoticia = new JButton("Noticias");
-		btnNoticia.setBackground(SystemColor.controlDkShadow);
-		btnNoticia.setHorizontalAlignment(SwingConstants.CENTER);
-		btnNoticia.setForeground(Color.WHITE);
 		btnNoticia.setBounds(0, 477, 311, 70);
-		btnNoticia.setContentAreaFilled(false);
-		btnNoticia.setBorder(null);
-		btnNoticia.setOpaque(true);
-		panel.add(btnNoticia);
 
 		btnOpciones = new JButton("M\u00E1s opciones...");
-		btnOpciones.setBackground(SystemColor.controlDkShadow);
-		btnOpciones.setHorizontalAlignment(SwingConstants.CENTER);
-		btnOpciones.setForeground(Color.WHITE);
 		btnOpciones.setBounds(0, 547, 311, 70);
-		btnOpciones.setContentAreaFilled(false);
-		btnOpciones.setBorder(null);
-		btnOpciones.setOpaque(true);
-		panel.add(btnOpciones);
 
 		btnRegistro = new JButton("Registrar Usuario");
-		btnRegistro.setBackground(SystemColor.controlDkShadow);
-		btnRegistro.setHorizontalAlignment(SwingConstants.CENTER);
-		btnRegistro.setForeground(Color.WHITE);
 		btnRegistro.setBounds(0, 629, 311, 70);
-		btnRegistro.setContentAreaFilled(false);
-		btnRegistro.setBorder(null);
-		btnRegistro.setOpaque(true);
-		panel.add(btnRegistro);
 
-		btnAlumnos.setRolloverEnabled(true);
-		btnAsignaturas.setRolloverEnabled(true);
-		btnCursos.setRolloverEnabled(true);
-		btnDocentes.setRolloverEnabled(true);
-		btnOpciones.setRolloverEnabled(true);
-		btnNoticia.setRolloverEnabled(true);
-		btnRegistro.setRolloverEnabled(true);
-
-		btnAlumnos.setFocusPainted(false);
-		btnAsignaturas.setFocusPainted(false);
-		btnCursos.setFocusPainted(false);
-		btnDocentes.setFocusPainted(false);
-		btnOpciones.setFocusPainted(false);
-		btnNoticia.setFocusPainted(false);
-		btnRegistro.setFocusPainted(false);
-		btnCerrarReg.setFocusPainted(false);
+		PanelModificaciones panelito = new PanelModificaciones();
 		
 		JPanel panelAcciones = new JPanel();
 		panelAcciones.setBorder(null);
@@ -361,7 +299,7 @@ public class GestionAlmi extends JFrame {
 		panelGrafico.addTab("", new ImageIcon(getClass().getResource("add.png")), panelCrear, "");
 		panelGrafico.setEnabledAt(0, true);
 		panelCrear.setLayout(new BoxLayout(panelCrear, BoxLayout.PAGE_AXIS));
-		PanelModificaciones panelito = new PanelModificaciones();
+
 		panelito.setBounds(0, 0, 855, 576);
 		
 		JPanel panelModificar = new JPanel();
@@ -377,10 +315,12 @@ public class GestionAlmi extends JFrame {
 		panelEliminar.setLayout(null);
 
 
+
 		JPanel panelBusquedas = new JPanel();
 		panelBusquedas.setBorder(null);
 		panelGrafico.addTab("", new ImageIcon(getClass().getResource("search.png")), panelBusquedas, "");
 		panelBusquedas.setLayout(null);
+
 
 		JPanel panelSQL = new JPanel();
 		panelSQL.setBorder(null);
@@ -392,7 +332,7 @@ public class GestionAlmi extends JFrame {
 		btnEnviar.setBackground(new Color(0, 100, 0));
 		btnEnviar.setBounds(1053, 665, 90, 28);
 		panelAcciones.add(btnEnviar);
-
+		ArrayList<JButton> tablas = new ArrayList<JButton>();
 		JButton btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.setForeground(Color.WHITE);
 		btnLimpiar.setBackground(new Color(178, 34, 34));
@@ -404,14 +344,20 @@ public class GestionAlmi extends JFrame {
 		shadowPane.setBounds(0, 0, 1280, 720);
 		contentPane.add(shadowPane);
 		shadowPane.setLayout(null);
-
-
+		tablas.add(0, btnAlumnos);
+		tablas.add(1, btnAsignaturas);
+		tablas.add(2, btnCursos);
+		tablas.add(3, btnDocentes);
+		tablas.add(4, btnNoticia);
+		tablas.add(5, btnOpciones);
+		tablas.add(6, btnRegistro);
 
 		btnCerrarSesion.setContentAreaFilled(false);
 		btnCerrarSesion.setBorder(null);
 		btnCerrarSesion.setOpaque(true);
 
 		lblNombreUsu.setText(Login.getUser());
+		botonesTablas(tablas);
 		registrarEventos();
 		//inicializar();
 		//mostrarTabla();
@@ -622,8 +568,22 @@ public class GestionAlmi extends JFrame {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-
+	}
+	private void botonesTablas(ArrayList<JButton> tablas) {
+		
+		for(int i=0;i<tablas.size();i++) {
+	
+			tablas.get(i).setBackground(SystemColor.controlDkShadow);
+			tablas.get(i).setHorizontalAlignment(SwingConstants.CENTER);
+			tablas.get(i).setForeground(Color.WHITE);
+			tablas.get(i).setContentAreaFilled(false);
+			tablas.get(i).setBorder(null);
+			tablas.get(i).setOpaque(true);
+			panel.add(tablas.get(i));
+			tablas.get(i).setRolloverEnabled(true);
+			tablas.get(i).setFocusPainted(false);
+		}
+		
 	}
 }
 

@@ -21,7 +21,7 @@ public class PanelModificaciones extends JPanel {
 		table = new JTable();
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null, null, null, null, null, null, null, null},
+				{"ID", "NOMBRE", "APELLIDOS", "lorem", null, null, null, null, null, null},
 				{null, null, null, null, null, null, null, null, null, null},
 				{null, null, null, null, null, null, null, null, null, null},
 				{null, null, null, null, null, null, null, null, null, null},
@@ -50,6 +50,6 @@ public class PanelModificaciones extends JPanel {
 		table.setColumnSelectionAllowed(true);
 		table.setCellSelectionEnabled(true);
 		table.setBounds(0, 0, 845, 565);		
-		scrollPane.add(table);
+		scrollPane.setViewportView(table);
 	}
 }
