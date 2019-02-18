@@ -3,6 +3,7 @@ import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.LayoutManager;
+import java.awt.Panel;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -58,6 +59,7 @@ import java.awt.GridBagLayout;
 import java.awt.Dialog.ModalExclusionType;
 import java.awt.Window.Type;
 import javax.swing.JLayeredPane;
+import javax.swing.JPasswordField;
 
 
 
@@ -82,9 +84,15 @@ public class GestionAlmi extends JFrame {
 	private JButton btnAsignaturas;
 	private JButton btnCursos;
 	private JButton btnDocentes;
-	private JButton btnNoticias;
 	private JButton btnOpciones;
-	private Image darkGray;
+	private Image darkGrey;
+	private JButton btnNoticia;
+	private JButton btnCerrarSesion;
+	private JButton btnRegistro;
+	private JPanel panel;
+	private JPasswordField passwordField;
+	private JPanel panelRegistro;
+	private JButton btnCerrarReg;
 	/**
 	 * Launch the application.
 	 */
@@ -127,7 +135,7 @@ public class GestionAlmi extends JFrame {
 		circMinimizar = new ImageIcon(getClass().getResource("minimizar.png")).getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 		clarSalir = new ImageIcon(getClass().getResource("salirCla.png")).getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 		clarMinimizar = new ImageIcon(getClass().getResource("minimizarCla.png")).getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
-		darkGray = new ImageIcon(getClass().getResource("Dark-Grey.jpg")).getImage();
+		darkGrey = new ImageIcon(getClass().getResource("Dark-Grey.jpg")).getImage().getScaledInstance(311, 70, Image.SCALE_FAST);
 		/*
 		JPanel authorization = new JPanel();
 		authorization.add(new JLabel ("test"));
@@ -146,8 +154,8 @@ public class GestionAlmi extends JFrame {
 		mnNewMenu.setFont(new Font("Arial Unicode MS", Font.PLAIN, 12));
 		mnNewMenu.setBounds(0, 0, 50, 50);
 		menuBar.add(mnNewMenu);
-		
-		JButton btnCerrarSesion = new JButton("Cerrar sesion");
+
+		btnCerrarSesion = new JButton(" Cerrar sesion ");
 		mnNewMenu.add(btnCerrarSesion);
 
 		JMenu mnNewMenu_1 = new JMenu("Propiedades");
@@ -166,7 +174,7 @@ public class GestionAlmi extends JFrame {
 		lblSesion.setHorizontalAlignment(SwingConstants.RIGHT);
 		menuBar.add(lblSesion);
 
-		JLabel lblNombreUsu = new JLabel("Nekane");
+		JLabel lblNombreUsu = new JLabel("");
 		menuBar.add(lblNombreUsu);
 
 		btnSalir = new JButton("");
@@ -202,6 +210,143 @@ public class GestionAlmi extends JFrame {
 
 		Component horizontalStrut_2 = Box.createHorizontalStrut(13);
 		menuBar.add(horizontalStrut_2);
+
+		panelRegistro = new JPanel();
+		panelRegistro.setBackground(SystemColor.controlDkShadow);
+		panelRegistro.setBounds(311, 35, 0, 685);
+		contentPane.add(panelRegistro);
+		panelRegistro.setLayout(null);
+
+		JLabel lblNuevoUsuario = new JLabel("Nuevo Usuario");
+		lblNuevoUsuario.setForeground(SystemColor.menu);
+		lblNuevoUsuario.setBackground(SystemColor.menu);
+		lblNuevoUsuario.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNuevoUsuario.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 45));
+		lblNuevoUsuario.setBounds(189, 50, 508, 76);
+		panelRegistro.add(lblNuevoUsuario);
+		
+		JLabel lblPerfilUsu = new JLabel("Perfil");
+		lblPerfilUsu.setForeground(SystemColor.menu);
+		lblPerfilUsu.setBounds(150, 201, 82, 34);
+		panelRegistro.add(lblPerfilUsu);
+
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(210, 235, 236, 25);
+		panelRegistro.add(comboBox);
+
+		passwordField = new JPasswordField();
+		passwordField.setBounds(364, 438, 236, 20);
+		panelRegistro.add(passwordField);
+		
+		btnCerrarReg = new JButton("X");
+		btnCerrarReg.setFont(new Font("Dialog", Font.BOLD, 24));
+		btnCerrarReg.setForeground(Color.WHITE);
+		btnCerrarReg.setBounds(900, 0, 55, 51);
+		btnCerrarReg.setBackground(SystemColor.controlDkShadow);
+		btnCerrarReg.setContentAreaFilled(false);
+		btnCerrarReg.setBorder(null);
+		btnCerrarReg.setOpaque(true);
+		
+		panelRegistro.add(btnCerrarReg);
+
+		panel = new JPanel();
+		panel.setBounds(0, 0, 311, 755);
+		contentPane.add(panel);
+		panel.setBackground(SystemColor.controlDkShadow);
+		panel.setLayout(null);
+
+		JLabel label = new JLabel("");
+		label.setBounds(0, 30, 301, 151);
+		panel.add(label);
+		label.setIcon(new ImageIcon(almi));
+
+		btnAlumnos = new JButton("Alumnos");
+		btnAlumnos.setForeground(Color.WHITE);
+		btnAlumnos.setBackground(SystemColor.controlDkShadow);
+		btnAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
+		btnAlumnos.setBounds(0, 198, 311, 70);
+		btnAlumnos.setContentAreaFilled(false);
+		btnAlumnos.setBorder(null);
+		btnAlumnos.setOpaque(true);
+		panel.add(btnAlumnos);
+
+		btnAsignaturas = new JButton("Asignaturas");
+		btnAsignaturas.setForeground(Color.WHITE);
+		btnAsignaturas.setHorizontalAlignment(SwingConstants.CENTER);
+		btnAsignaturas.setBounds(0, 267, 311, 70);
+		btnAsignaturas.setBackground(SystemColor.controlDkShadow);
+		btnAsignaturas.setContentAreaFilled(false);
+		btnAsignaturas.setBorder(null);
+		btnAsignaturas.setOpaque(true);
+		panel.add(btnAsignaturas);
+
+		btnCursos = new JButton("Cursos");
+		btnCursos.setHorizontalAlignment(SwingConstants.CENTER);
+		btnCursos.setForeground(Color.WHITE);
+		btnCursos.setBackground(SystemColor.controlDkShadow);
+		btnCursos.setContentAreaFilled(false);
+		btnCursos.setBorder(null);
+		btnCursos.setBounds(0, 337, 311, 70);
+		btnCursos.setOpaque(true);
+		panel.add(btnCursos);
+
+		btnDocentes = new JButton("Docentes");
+		btnDocentes.setBackground(SystemColor.controlDkShadow);
+		btnDocentes.setHorizontalAlignment(SwingConstants.CENTER);
+		btnDocentes.setForeground(Color.WHITE);
+		btnDocentes.setBounds(0, 407, 311, 70);
+		btnDocentes.setContentAreaFilled(false);
+		btnDocentes.setBorder(null);
+		btnDocentes.setOpaque(true);
+		panel.add(btnDocentes);
+
+		btnNoticia = new JButton("Noticias");
+		btnNoticia.setBackground(SystemColor.controlDkShadow);
+		btnNoticia.setHorizontalAlignment(SwingConstants.CENTER);
+		btnNoticia.setForeground(Color.WHITE);
+		btnNoticia.setBounds(0, 477, 311, 70);
+		btnNoticia.setContentAreaFilled(false);
+		btnNoticia.setBorder(null);
+		btnNoticia.setOpaque(true);
+		panel.add(btnNoticia);
+
+		btnOpciones = new JButton("M\u00E1s opciones...");
+		btnOpciones.setBackground(SystemColor.controlDkShadow);
+		btnOpciones.setHorizontalAlignment(SwingConstants.CENTER);
+		btnOpciones.setForeground(Color.WHITE);
+		btnOpciones.setBounds(0, 547, 311, 70);
+		btnOpciones.setContentAreaFilled(false);
+		btnOpciones.setBorder(null);
+		btnOpciones.setOpaque(true);
+		panel.add(btnOpciones);
+
+		btnRegistro = new JButton("Registrar Usuario");
+		btnRegistro.setBackground(SystemColor.controlDkShadow);
+		btnRegistro.setHorizontalAlignment(SwingConstants.CENTER);
+		btnRegistro.setForeground(Color.WHITE);
+		btnRegistro.setBounds(0, 629, 311, 70);
+		btnRegistro.setContentAreaFilled(false);
+		btnRegistro.setBorder(null);
+		btnRegistro.setOpaque(true);
+		panel.add(btnRegistro);
+
+		btnAlumnos.setRolloverEnabled(true);
+		btnAsignaturas.setRolloverEnabled(true);
+		btnCursos.setRolloverEnabled(true);
+		btnDocentes.setRolloverEnabled(true);
+		btnOpciones.setRolloverEnabled(true);
+		btnNoticia.setRolloverEnabled(true);
+		btnRegistro.setRolloverEnabled(true);
+
+		btnAlumnos.setFocusPainted(false);
+		btnAsignaturas.setFocusPainted(false);
+		btnCursos.setFocusPainted(false);
+		btnDocentes.setFocusPainted(false);
+		btnOpciones.setFocusPainted(false);
+		btnNoticia.setFocusPainted(false);
+		btnRegistro.setFocusPainted(false);
+		btnCerrarReg.setFocusPainted(false);
+		
 		JPanel panelAcciones = new JPanel();
 		panelAcciones.setBorder(null);
 		panelAcciones.setBounds(0, 0, 1280, 720);
@@ -269,77 +414,6 @@ public class GestionAlmi extends JFrame {
 		panelGrafico.addTab("", new ImageIcon(getClass().getResource("sqlicon.png")), panelSQL, "");
 		panelSQL.setLayout(null);
 
-		JPanel panel = new JPanel();
-		panel.setBackground(SystemColor.controlDkShadow);
-		panel.setBounds(0, 0, 311, 755);
-		panelAcciones.add(panel);
-		panel.setLayout(null);
-
-		JLabel label = new JLabel("");
-		label.setBounds(0, 30, 301, 151);
-		panel.add(label);
-		label.setIcon(new ImageIcon(almi));
-
-		btnAlumnos = new JButton("Alumnos");
-		btnAlumnos.setForeground(Color.WHITE);
-		btnAlumnos.setOpaque(true);
-		btnAlumnos.setContentAreaFilled(false);
-		btnAlumnos.setBorder(null);
-		btnAlumnos.setBackground(SystemColor.controlDkShadow);
-		btnAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
-		btnAlumnos.setBounds(0, 248, 311, 70);
-		panel.add(btnAlumnos);
-
-		btnAsignaturas = new JButton("Asignaturas");
-		btnAsignaturas.setForeground(Color.WHITE);
-		btnAsignaturas.setHorizontalAlignment(SwingConstants.CENTER);
-		btnAsignaturas.setBounds(0, 317, 311, 70);
-		btnAsignaturas.setBackground(SystemColor.controlDkShadow);
-		btnAsignaturas.setContentAreaFilled(false);
-		btnAsignaturas.setBorder(null);
-		btnAsignaturas.setOpaque(true);
-		panel.add(btnAsignaturas);
-
-		btnCursos = new JButton("Cursos");
-		btnCursos.setHorizontalAlignment(SwingConstants.CENTER);
-		btnCursos.setForeground(Color.WHITE);
-		btnCursos.setBackground(SystemColor.controlDkShadow);
-		btnCursos.setContentAreaFilled(false);
-		btnCursos.setBorder(null);
-		btnCursos.setBounds(0, 387, 311, 70);
-		btnCursos.setOpaque(true);
-		panel.add(btnCursos);
-
-		btnDocentes = new JButton("Docentes");
-		btnDocentes.setBackground(SystemColor.controlDkShadow);
-		btnDocentes.setHorizontalAlignment(SwingConstants.CENTER);
-		btnDocentes.setForeground(Color.WHITE);
-		btnDocentes.setBounds(0, 457, 311, 70);
-		btnDocentes.setContentAreaFilled(false);
-		btnDocentes.setBorder(null);
-		btnDocentes.setOpaque(true);
-		panel.add(btnDocentes);
-
-		btnNoticias = new JButton("Noticias");
-		btnNoticias.setOpaque(true);
-		btnNoticias.setContentAreaFilled(false);
-		btnNoticias.setBorder(null);
-		btnNoticias.setHorizontalAlignment(SwingConstants.CENTER);
-		btnNoticias.setForeground(Color.WHITE);
-		btnNoticias.setBackground(SystemColor.controlDkShadow);
-		btnNoticias.setBounds(0, 527, 311, 70);
-		panel.add(btnNoticias);
-
-		btnOpciones = new JButton("M\u00E1s opciones...");
-		btnOpciones.setOpaque(true);
-		btnOpciones.setContentAreaFilled(false);
-		btnOpciones.setBorder(null);
-		btnOpciones.setHorizontalAlignment(SwingConstants.CENTER);
-		btnOpciones.setForeground(Color.WHITE);
-		btnOpciones.setBackground(SystemColor.controlDkShadow);
-		btnOpciones.setBounds(0, 597, 311, 70);
-		panel.add(btnOpciones);
-
 		JButton btnEnviar = new JButton("A\u00F1adir");
 		btnEnviar.setForeground(Color.WHITE);
 		btnEnviar.setBackground(new Color(0, 100, 0));
@@ -357,13 +431,14 @@ public class GestionAlmi extends JFrame {
 		shadowPane.setBounds(0, 0, 1280, 720);
 		contentPane.add(shadowPane);
 		shadowPane.setLayout(null);
-		
-		btnAlumnos.setRolloverIcon(new ImageIcon(darkGray));
-		btnAsignaturas.setRolloverIcon(new ImageIcon(darkGray));
-		btnCursos.setRolloverIcon(new ImageIcon(darkGray));
-		btnDocentes.setRolloverIcon(new ImageIcon(darkGray));
-		btnNoticias.setRolloverIcon(new ImageIcon(darkGray));
-		btnOpciones.setRolloverIcon(new ImageIcon(darkGray));
+
+
+
+		btnCerrarSesion.setContentAreaFilled(false);
+		btnCerrarSesion.setBorder(null);
+		btnCerrarSesion.setOpaque(true);
+
+		lblNombreUsu.setText(Login.getUser());
 		registrarEventos();
 		//inicializar();
 		//mostrarTabla();
@@ -392,7 +467,163 @@ public class GestionAlmi extends JFrame {
 				GestionAlmi.this.setLocation(e.getXOnScreen()-mx,e.getYOnScreen()-my);
 			}
 		});
+		
+		btnAlumnos.addMouseListener(new MouseAdapter() {
 
+			public void mouseReleased(MouseEvent e) {
+				btnAlumnos.setFont(btnDocentes.getFont());
+			}
+
+			public void mousePressed(MouseEvent e) {
+				btnAlumnos.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
+			}
+
+			public void mouseExited(MouseEvent e) {
+				btnAlumnos.setBackground(SystemColor.controlDkShadow);
+			}
+
+			public void mouseEntered(MouseEvent e) {
+				btnAlumnos.setBackground(SystemColor.DARK_GRAY);
+			}
+
+		});
+		btnAsignaturas.addMouseListener(new MouseAdapter() {
+
+			public void mouseReleased(MouseEvent e) {
+				btnAsignaturas.setFont(btnDocentes.getFont());
+			}
+
+			public void mousePressed(MouseEvent e) {
+				btnAsignaturas.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
+			}
+
+			public void mouseExited(MouseEvent e) {
+				btnAsignaturas.setBackground(SystemColor.controlDkShadow);
+			}
+
+			public void mouseEntered(MouseEvent e) {
+				btnAsignaturas.setBackground(SystemColor.DARK_GRAY);
+			}
+
+		});
+		btnCursos.addMouseListener(new MouseAdapter() {
+
+			public void mouseReleased(MouseEvent e) {
+				btnCursos.setFont(btnDocentes.getFont());
+			}
+
+			public void mousePressed(MouseEvent e) {
+				btnCursos.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
+			}
+
+			public void mouseExited(MouseEvent e) {
+				btnCursos.setBackground(SystemColor.controlDkShadow);
+			}
+
+			public void mouseEntered(MouseEvent e) {
+				btnCursos.setBackground(SystemColor.DARK_GRAY);
+			}
+
+		});
+		btnDocentes.addMouseListener(new MouseAdapter() {
+
+			public void mouseReleased(MouseEvent e) {
+				btnDocentes.setFont(btnAlumnos.getFont());
+			}
+
+			public void mousePressed(MouseEvent e) {
+				btnDocentes.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
+			}
+
+			public void mouseExited(MouseEvent e) {
+				btnDocentes.setBackground(SystemColor.controlDkShadow);
+			}
+
+			public void mouseEntered(MouseEvent e) {
+				btnDocentes.setBackground(SystemColor.DARK_GRAY);
+			}
+
+		});
+		btnNoticia.addMouseListener(new MouseAdapter() {
+
+			public void mouseReleased(MouseEvent e) {
+				btnNoticia.setFont(btnAlumnos.getFont());
+			}
+
+			public void mousePressed(MouseEvent e) {
+				btnNoticia.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
+			}
+
+			public void mouseExited(MouseEvent e) {
+				btnNoticia.setBackground(SystemColor.controlDkShadow);
+			}
+
+			public void mouseEntered(MouseEvent e) {
+				btnNoticia.setBackground(SystemColor.DARK_GRAY);
+			}
+
+		});
+		btnOpciones.addMouseListener(new MouseAdapter() {
+
+			public void mouseReleased(MouseEvent e) {
+				btnOpciones.setFont(btnAlumnos.getFont());
+			}
+
+			public void mousePressed(MouseEvent e) {
+				btnOpciones.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
+			}
+
+			public void mouseExited(MouseEvent e) {
+				btnOpciones.setBackground(SystemColor.controlDkShadow);
+			}
+
+			public void mouseEntered(MouseEvent e) {
+				btnOpciones.setBackground(SystemColor.DARK_GRAY);
+			}
+
+		});
+		btnRegistro.addMouseListener(new MouseAdapter() {
+
+			public void mouseReleased(MouseEvent e) {
+				btnRegistro.setFont(btnAlumnos.getFont());
+			}
+
+			public void mousePressed(MouseEvent e) {
+				btnRegistro.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
+				
+				for(int i=0; i<1280;i++){
+					panelRegistro.setBounds(panelRegistro.getX(), panelRegistro.getY(), panelRegistro.getWidth()+i, panelRegistro.getHeight());
+				}
+
+			}
+
+			public void mouseExited(MouseEvent e) {
+				btnRegistro.setBackground(SystemColor.controlDkShadow);
+			}
+
+			public void mouseEntered(MouseEvent e) {
+				btnRegistro.setBackground(SystemColor.DARK_GRAY);
+			}
+
+		});
+		btnCerrarSesion.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				GestionAlmi.this.setVisible(false);
+				Login.main(null);
+			}
+		});
+		btnCerrarReg.addMouseListener(new MouseAdapter() {
+
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				panelRegistro.setBounds(panelRegistro.getX(), panelRegistro.getY(), 0, panelRegistro.getHeight());
+				
+			}
+
+		});
 	}
 
 	private void mostrarTabla() {

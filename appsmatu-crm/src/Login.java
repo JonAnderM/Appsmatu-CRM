@@ -39,6 +39,7 @@ public class Login extends JFrame {
 	private JPasswordField txtpnPassword;
 	private JTextField txtpnUser;
 	private JButton btnClose;
+	private static String user;
 	private JButton btnLogin;
 	private JLabel lblWeb;
 
@@ -51,7 +52,7 @@ public class Login extends JFrame {
 			public void run() {
 				try {
 					Login frame = new Login();
-					
+
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -63,8 +64,17 @@ public class Login extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+
+	public static String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
 	public Login() {
-		
+
 		setUndecorated(true);
 		setBounds(450, 300, 500, 300);
 		contentPane = new JPanel();
@@ -172,8 +182,8 @@ public class Login extends JFrame {
 				}
 			}
 		});
-		
-//AQUI SE CONTROLA QUE CADA VEZ QUE SE PULSE EL TABULADOR, ALTERNE EL JTEXTFIELD
+
+		//AQUI SE CONTROLA QUE CADA VEZ QUE SE PULSE EL TABULADOR, ALTERNE EL JTEXTFIELD
 		txtpnUser.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_TAB){
@@ -196,9 +206,10 @@ public class Login extends JFrame {
 		});
 	}
 
-//CONTROLA SI EL USUARIO Y CONTRASEÑA COINCIDEN CON LOS DE LA BBDD
+	//CONTROLA SI EL USUARIO Y CONTRASEÑA COINCIDEN CON LOS DE LA BBDD
 	public boolean login(String user, String passwd) {
 		BaseDatos.getBBDD().conectar();
+		this.user = user;
 
 		if(BaseDatos.getBBDD().loginUser(user, passwd)){
 			BaseDatos.getBBDD().desconectar();
@@ -212,7 +223,8 @@ public class Login extends JFrame {
 		}
 	}
 
-//FUNCION PARA ABRIR LA PAGINA DE ALMI CUANDO SE CLICKA EN EL LOGO
+
+	//FUNCION PARA ABRIR LA PAGINA DE ALMI CUANDO SE CLICKA EN EL LOGO
 	private void openWeb(MouseEvent arg0) {                                         
 		try { 
 			String url = "https://www.almi.eus";
@@ -222,27 +234,27 @@ public class Login extends JFrame {
 			System.out.println(e.getMessage());
 		}
 	}    
-	
-//CON ESTO CODIFICAMOS LA CONTRASEÑA EN SHA-256 PARA COMPARARLA CON LA ALMACENADA EN LA BBDD
+
+	//CON ESTO CODIFICAMOS LA CONTRASEÑA EN SHA-256 PARA COMPARARLA CON LA ALMACENADA EN LA BBDD
 	private static String encodeHex(byte[] digest) {
-	    StringBuilder sb = new StringBuilder();
-	    for (int i = 0; i < digest.length; i++) {
-	        sb.append(Integer.toString((digest[i] & 0xff) + 0x100, 16).substring(1));
-	    }
-	    return sb.toString();
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < digest.length; i++) {
+			sb.append(Integer.toString((digest[i] & 0xff) + 0x100, 16).substring(1));
+		}
+		return sb.toString();
 	}
-	
+
 	public static String digest(String alg, String input) {
-	    try {
-	        MessageDigest md = MessageDigest.getInstance(alg);
-	        byte[] buffer = input.getBytes("UTF-8");
-	        md.update(buffer);
-	        byte[] digest = md.digest();
-	        return encodeHex(digest);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return e.getMessage();
-	    }
+		try {
+			MessageDigest md = MessageDigest.getInstance(alg);
+			byte[] buffer = input.getBytes("UTF-8");
+			md.update(buffer);
+			byte[] digest = md.digest();
+			return encodeHex(digest);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}
 	}
 
 }
