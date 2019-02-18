@@ -231,7 +231,7 @@ public class GestionAlmi extends JFrame {
 		panelRegistro.add(lblPerfilUsu);
 
 		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(210, 235, 236, 25);
+		comboBox.setBounds(150, 235, 236, 25);
 		panelRegistro.add(comboBox);
 
 		passwordField = new JPasswordField();
