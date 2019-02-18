@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JComboBox;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 
@@ -70,7 +71,6 @@ public class GestionAlmi extends JFrame {
 	private Image almi;
 	private BaseDatos bd;
 	private ResultSet rs;
-	private JTable table;
 	private Image circSalir;
 	private Image circMinimizar;
 	private Image clarSalir;
@@ -93,6 +93,8 @@ public class GestionAlmi extends JFrame {
 	private JPasswordField passwordField;
 	private JPanel panelRegistro;
 	private JButton btnCerrarReg;
+	private PanelModificaciones PanelModificaciones;
+
 	/**
 	 * Launch the application.
 	 */
@@ -101,7 +103,6 @@ public class GestionAlmi extends JFrame {
 			public void run() {
 				try {
 					GestionAlmi frame = new GestionAlmi();
-
 					frame.setVisible(true);
 					//frame.setUndecorated(true);
 					frame.setShape(new RoundRectangle2D.Double(0, 0, 1280, 720, 12, 12));
@@ -118,9 +119,7 @@ public class GestionAlmi extends JFrame {
 	public GestionAlmi() {
 
 		setUndecorated(true);
-
 		setResizable(false);
-
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 70, 1280, 720);
 		contentPane = new JPanel();
@@ -129,13 +128,12 @@ public class GestionAlmi extends JFrame {
 		contentPane.setBackground(new Color(0, 102, 153));
 		setContentPane(contentPane);
 
-
 		almi = new ImageIcon(getClass().getResource("Almi logo.png")).getImage().getScaledInstance(301, 151, Image.SCALE_SMOOTH);
 		circSalir = new ImageIcon(getClass().getResource("salir.png")).getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 		circMinimizar = new ImageIcon(getClass().getResource("minimizar.png")).getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 		clarSalir = new ImageIcon(getClass().getResource("salirCla.png")).getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 		clarMinimizar = new ImageIcon(getClass().getResource("minimizarCla.png")).getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
-		darkGrey = new ImageIcon(getClass().getResource("Dark-Grey.jpg")).getImage().getScaledInstance(311, 70, Image.SCALE_FAST);
+
 		/*
 		JPanel authorization = new JPanel();
 		authorization.add(new JLabel ("test"));
@@ -246,7 +244,6 @@ public class GestionAlmi extends JFrame {
 		btnCerrarReg.setContentAreaFilled(false);
 		btnCerrarReg.setBorder(null);
 		btnCerrarReg.setOpaque(true);
-		
 		panelRegistro.add(btnCerrarReg);
 
 		panel = new JPanel();
@@ -364,38 +361,14 @@ public class GestionAlmi extends JFrame {
 		panelGrafico.addTab("", new ImageIcon(getClass().getResource("add.png")), panelCrear, "");
 		panelGrafico.setEnabledAt(0, true);
 		panelCrear.setLayout(new BoxLayout(panelCrear, BoxLayout.PAGE_AXIS));
-
+		PanelModificaciones panelito = new PanelModificaciones();
+		panelito.setBounds(0, 0, 855, 576);
+		
 		JPanel panelModificar = new JPanel();
 		panelModificar.setBorder(null);
 		panelGrafico.addTab("", new ImageIcon(getClass().getResource("icon.png")), panelModificar, "");
 		panelModificar.setLayout(null);
-
-		JScrollBar scrollBar = new JScrollBar();
-		scrollBar.setOrientation(JScrollBar.HORIZONTAL);
-		scrollBar.setBounds(0, 449, 912, 15);
-		panelModificar.add(scrollBar);
-
-		JScrollBar scrollBar_1 = new JScrollBar();
-		scrollBar_1.setBounds(894, 0, 18, 448);
-		panelModificar.add(scrollBar_1);
-
-		table = new JTable();
-		table.setBounds(0, 0, 899, 464);
-		panelModificar.add(table);
-		table.setModel(new DefaultTableModel(
-				new Object[][] {
-					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-				},
-				new String[] {
-						"New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column"
-				}
-				));
-		table.setCellSelectionEnabled(true);
-		table.setColumnSelectionAllowed(true);
+		panelModificar.add(panelito);
 		panelGrafico.setForegroundAt(1, Color.BLACK);
 
 		JPanel panelEliminar = new JPanel();

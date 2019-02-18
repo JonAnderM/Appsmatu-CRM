@@ -29,6 +29,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
+import javax.swing.plaf.ProgressBarUI;
+import javax.swing.JProgressBar;
 
 
 
@@ -42,6 +44,7 @@ public class Login extends JFrame {
 	private static String user;
 	private JButton btnLogin;
 	private JLabel lblWeb;
+	private JProgressBar progressBar;
 
 
 	/**
@@ -87,11 +90,17 @@ public class Login extends JFrame {
 		panel.setBounds(0, 0, 500, 300);
 		contentPane.add(panel);
 		panel.setLayout(null);
+		
+		progressBar = new JProgressBar();
+		progressBar.setBounds(258, 254, 201, 14);
+		panel.add(progressBar);
+		progressBar.setVisible(false);
 		btnLogin = new JButton("Login");
 		btnLogin.setForeground(SystemColor.menu);
 		btnLogin.setBounds(258, 207, 89, 23);
 		btnLogin.setBorder(null);
 		btnLogin.setBackground(Color.DARK_GRAY);
+		btnLogin.setFocusPainted(false);
 		panel.add(btnLogin);
 
 		btnClose = new JButton("Close");
@@ -99,6 +108,7 @@ public class Login extends JFrame {
 		btnClose.setBounds(370, 207, 89, 23);
 		btnClose.setBorder(null);
 		btnClose.setBackground(Color.DARK_GRAY);
+		btnClose.setFocusPainted(false);
 		panel.add(btnClose);
 
 		lblWeb = new JLabel();
@@ -145,15 +155,18 @@ public class Login extends JFrame {
 		});
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(txtpnUser.getText() == "" || txtpnPassword.getPassword().toString() == "" || !txtpnUser.isEditable()){
+					JOptionPane.showMessageDialog(null, "No deje campos vacios");
 				/*
 				System.out.println(digest("SHA-256", "Almi123"));
 				System.out.println(String.valueOf(txtpnPassword.getPassword()));
 				System.out.println(digest("SHA-256", String.valueOf(txtpnPassword.getPassword())));
 				 */
-				if(login(txtpnUser.getText().toString(), digest("SHA-256", String.valueOf(txtpnPassword.getPassword())))){
+				}else if(login(txtpnUser.getText().toString(), digest("SHA-256", String.valueOf(txtpnPassword.getPassword())))){
 					Login.this.setVisible(false);
 					GestionAlmi.main(null);
 				}
+				
 			}
 		});
 		txtpnUser.addMouseListener(new MouseAdapter() {
@@ -256,5 +269,4 @@ public class Login extends JFrame {
 			return e.getMessage();
 		}
 	}
-
 }
