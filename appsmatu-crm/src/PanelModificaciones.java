@@ -1,4 +1,6 @@
 
+import java.awt.Color;
+import java.awt.Component;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -7,29 +9,52 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.TableView.TableCell;
 
 
 public class PanelModificaciones extends JPanel {
 	private JTable table;
+
 
 	/**
 	 * Create the panel.
 	 */
 	public PanelModificaciones() {
 		setLayout(null);
+		
+
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 855, 575);
+		scrollPane.setBounds(0, 0, 835, 575);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		add(scrollPane);
 		
 		table = new JTable();
+		
+	
+	
+
+		
+		table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer()
+		{
+		    @Override
+		    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+		    {
+		    
+		    	final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+		    	if(!isSelected){
+		        c.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.WHITE);
+		    	}
+		        return c;
+		    }
+		});
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setFillsViewportHeight(true);
 		table.setColumnSelectionAllowed(true);
 		table.setCellSelectionEnabled(true);
-		table.setBounds(0, 0, 845, 565);		
+		table.setBounds(0, 0, 845, 565);
 		scrollPane.setViewportView(table);
 		
 		try {
@@ -39,6 +64,9 @@ public class PanelModificaciones extends JPanel {
 			e.printStackTrace();
 		}
 	}
+	
+
+	
 
 	public JTable getTable() {
 		return table;
