@@ -17,7 +17,8 @@ public class BaseDatos {
 
 	//CONSTRUCTORES
 	BaseDatos() {
-		cadenaConexion="jdbc:mysql://www.db4free.net:3306/sara_baras?verifyServerCertificate=false&useSSL=true&zeroDateTimeBehavior=convertToNull";
+		cadenaConexion="jdbc:mysql://localhost:33066/sara_baras?verifyServerCertificate=false&useSSL=true&zeroDateTimeBehavior=convertToNull";
+		//cadenaConexion="jdbc:mysql://www.db4free.net:3306/sara_baras?verifyServerCertificate=false&useSSL=true&zeroDateTimeBehavior=convertToNull";
 		driver="com.mysql.jdbc.Driver";
 		try {
 			Class.forName(driver);
@@ -33,7 +34,8 @@ public class BaseDatos {
 	}
 	public void conectar() {
 		try {
-			cn=DriverManager.getConnection(cadenaConexion, "sarabaras", "sarabaras123");
+			//cn=DriverManager.getConnection(cadenaConexion, "sarabaras", "sarabaras123");
+			cn=DriverManager.getConnection(cadenaConexion, "root", "");
 			System.out.println(cn);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

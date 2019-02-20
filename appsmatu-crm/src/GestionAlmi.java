@@ -94,11 +94,19 @@ public class GestionAlmi extends JFrame {
 	private JButton btnNoticia;
 	private JButton btnCerrarSesion;
 	private JButton btnRegistro;
+	private JLabel lblAlumnos;
+	private JLabel lblAsignaturas;
+	private JLabel lblCursos;
+	private JLabel lblDocentes;
+	private JLabel lblOpciones;
+	private JLabel lblNoticia;
+	private JLabel lblRegistro;
 	private JPanel panel;
 	private JPasswordField passwordField;
 	private JPanel panelRegistro;
 	private JButton btnCerrarReg;
 	private ArrayList<JButton> tablas;
+	private ArrayList<JLabel> labels;
 	private PanelModificaciones panelModificaciones;
 	private JPanel panelAcciones;
 	private JButton btnEnviar;
@@ -114,6 +122,11 @@ public class GestionAlmi extends JFrame {
 	private Image modificarSel;
 	private Image borrarSel;
 	private Image sqlSel;
+	private JButton btnBuscar;
+	private JButton btnNuevo;
+	private JButton btnModificar;
+	private JButton btnEliminar;
+	private JButton btnSql;
 
 	/**
 	 * Launch the application.
@@ -153,13 +166,13 @@ public class GestionAlmi extends JFrame {
 		circMinimizar = new ImageIcon(getClass().getResource("minimizar.png")).getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 		clarSalir = new ImageIcon(getClass().getResource("salirCla.png")).getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 		clarMinimizar = new ImageIcon(getClass().getResource("minimizarCla.png")).getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
-		
+
 		buscar = new ImageIcon(getClass().getResource("search.png")).getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH); 
 		nuevo = new ImageIcon(getClass().getResource("add.png")).getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH); 
 		modificar = new ImageIcon(getClass().getResource("icon.png")).getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);  
 		borrar = new ImageIcon(getClass().getResource("delete.png")).getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH); 
 		sql = new ImageIcon(getClass().getResource("sqlicon.png")).getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH); 
-		
+
 		buscarSel = new ImageIcon(getClass().getResource("searchSel.png")).getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH); 
 		nuevoSel = new ImageIcon(getClass().getResource("addSel.png")).getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH); 
 		modificarSel = new ImageIcon(getClass().getResource("iconSel.png")).getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);  
@@ -251,7 +264,7 @@ public class GestionAlmi extends JFrame {
 		lblNuevoUsuario.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 45));
 		lblNuevoUsuario.setBounds(189, 50, 508, 76);
 		panelRegistro.add(lblNuevoUsuario);
-		
+
 		JLabel lblPerfilUsu = new JLabel("Perfil");
 		lblPerfilUsu.setForeground(SystemColor.menu);
 		lblPerfilUsu.setBounds(150, 201, 82, 34);
@@ -264,7 +277,7 @@ public class GestionAlmi extends JFrame {
 		passwordField = new JPasswordField();
 		passwordField.setBounds(364, 438, 236, 20);
 		panelRegistro.add(passwordField);
-		
+
 		btnCerrarReg = new JButton("X");
 		btnCerrarReg.setFont(new Font("Dialog", Font.BOLD, 24));
 		btnCerrarReg.setForeground(Color.WHITE);
@@ -287,92 +300,114 @@ public class GestionAlmi extends JFrame {
 		label.setIcon(new ImageIcon(almi));
 
 		btnAlumnos = new JButton("Alumnos");
-		btnAlumnos.setBounds(0, 198, 311, 70);
+		btnAlumnos.setBounds(0, 198, 311, 60);
+		lblAlumnos = new JLabel();
+		lblAlumnos.setBounds(0, 258, 311, 10);
+		lblAlumnos.setBackground(new Color(78, 74, 123));
 
 		btnAsignaturas = new JButton("Asignaturas");
-		btnAsignaturas.setBounds(0, 267, 311, 70);
+		btnAsignaturas.setBounds(0, 268, 311, 60);
+		lblAsignaturas = new JLabel();
+		lblAsignaturas.setBounds(0, 328, 311, 10);
+		lblAsignaturas.setBackground(new Color(108, 84, 153));
 
 		btnCursos = new JButton("Cursos");
-		btnCursos.setBounds(0, 337, 311, 70);
+		btnCursos.setBounds(0, 338, 311, 60);
+		lblCursos = new JLabel();
+		lblCursos.setBounds(0, 398, 311, 10);
+		lblCursos.setBackground(new Color(0, 102, 153));
 
 		btnDocentes = new JButton("Docentes");
-		btnDocentes.setBounds(0, 407, 311, 70);
+		btnDocentes.setBounds(0, 408, 311, 60);
+		lblDocentes = new JLabel();
+		lblDocentes.setBounds(0, 468, 311, 10);
+		lblDocentes.setBackground(new Color(18, 55, 114));
 
 		btnNoticia = new JButton("Noticias");
-		btnNoticia.setBounds(0, 477, 311, 70);
+		btnNoticia.setBounds(0, 478, 311, 60);
+		lblNoticia = new JLabel();
+		lblNoticia.setBounds(0, 538, 311, 10);
+		lblNoticia.setBackground(new Color(18, 114, 112));
 
 		btnOpciones = new JButton("M\u00E1s opciones...");
-		btnOpciones.setBounds(0, 547, 311, 70);
+		btnOpciones.setBounds(0, 548, 311, 60);
+		lblOpciones = new JLabel();
+		lblOpciones.setBounds(0, 608, 311, 10);
+		lblOpciones.setBackground(new Color(18, 114, 69));
 
 		btnRegistro = new JButton("Registrar Usuario");
-		btnRegistro.setBounds(0, 629, 311, 70);
-		
+		btnRegistro.setBounds(0, 618, 311, 60);
+		lblRegistro = new JLabel();
+		lblRegistro.setBounds(0, 678, 311, 10);
+		lblRegistro.setBackground(new Color(41, 102, 50));
+
 		panelAcciones = new JPanel();
 		panelAcciones.setBorder(null);
 		panelAcciones.setBounds(311, 35, 969, 685);
 		contentPane.add(panelAcciones);
 		panelAcciones.setLayout(null);
 		panelAcciones.setBackground(contentPane.getBackground());
-		
-				PanelModificaciones panelito = new PanelModificaciones();
-				panelito.setBounds(20, 20, 835, 576);
-				panelAcciones.add(panelito);
-		
+
+		PanelModificaciones panelito = new PanelModificaciones();
+		panelito.setBounds(20, 20, 835, 576);
+		panelAcciones.add(panelito);
+
 		panel_1 = new JPanel();
 		panel_1.setBackground(SystemColor.controlDkShadow);
 		panel_1.setBounds(879, 0, 90, 685);
 		panelAcciones.add(panel_1);
 		panel_1.setLayout(null);
-		
-		JButton btnBuscar = new JButton("Buscar");
+
+		btnBuscar = new JButton("Buscar");
 		btnBuscar.setBounds(0, 0, 90, 90);
 		panel_1.add(btnBuscar);
-		
-		JButton btnNuevo = new JButton("Nuevo");
+
+		btnNuevo = new JButton("Nuevo");
 		btnNuevo.setBounds(0, 160, 90, 90);
 		panel_1.add(btnNuevo);
-		
-		JButton btnModificar = new JButton("Modificar");
+
+		btnModificar = new JButton("Modificar");
 		btnModificar.setBounds(0, 249, 90, 90);
 		panel_1.add(btnModificar);
-		
-		JButton btnEliminar = new JButton("Eliminar");
+
+		btnEliminar = new JButton("Eliminar");
 		btnEliminar.setBounds(0, 339, 90, 90);
 		panel_1.add(btnEliminar);
-		
-		JButton btnSql = new JButton("SQL");
+
+		btnSql = new JButton("SQL");
 		btnSql.setHorizontalAlignment(SwingConstants.TRAILING);
 		btnSql.setBounds(0, 506, 90, 90);
 		panel_1.add(btnSql);
-		
-		
+
+
 
 		btnEnviar = new JButton("A\u00F1adir");
 		btnEnviar.setForeground(Color.WHITE);
 		btnEnviar.setBackground(new Color(0, 100, 0));
 		btnEnviar.setBounds(669, 632, 90, 28);
 		panelAcciones.add(btnEnviar);
-		ArrayList<JButton> tablas = new ArrayList<JButton>();
+		tablas = new ArrayList<JButton>();
+		labels = new ArrayList<JLabel>();
 		btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.setForeground(Color.WHITE);
 		btnLimpiar.setBackground(new Color(178, 34, 34));
 		btnLimpiar.setBounds(771, 632, 90, 28);
 		panelAcciones.add(btnLimpiar);
-		
-		
+
+
 		btnBuscar.setIcon(new ImageIcon(buscar));
 		btnNuevo.setIcon(new ImageIcon(nuevo));
 		btnModificar.setIcon(new ImageIcon(modificar));
 		btnEliminar.setIcon(new ImageIcon(borrar));
 		btnSql.setIcon(new ImageIcon(sql));
 
-		
+
 		btnBuscar.setRolloverIcon(new ImageIcon(buscarSel));
 		btnNuevo.setRolloverIcon(new ImageIcon(nuevoSel));
 		btnModificar.setRolloverIcon(new ImageIcon(modificarSel));
 		btnEliminar.setRolloverIcon(new ImageIcon(borrarSel));
 		btnSql.setRolloverIcon(new ImageIcon(sqlSel));
-		
+
 
 		JPanel shadowPane = new JPanel();
 		shadowPane.setBackground(Color.DARK_GRAY);
@@ -392,6 +427,14 @@ public class GestionAlmi extends JFrame {
 		tablas.add(10, btnEliminar);
 		tablas.add(11, btnSql);
 		
+		labels.add(0, lblAlumnos);
+		labels.add(1, lblAsignaturas);
+		labels.add(2, lblCursos);
+		labels.add(3, lblDocentes);
+		labels.add(4, lblNoticia);
+		labels.add(5, lblOpciones);
+		labels.add(6, lblRegistro);
+
 		table = new JTable();
 
 		btnCerrarSesion.setContentAreaFilled(false);
@@ -399,50 +442,59 @@ public class GestionAlmi extends JFrame {
 		btnCerrarSesion.setOpaque(true);
 
 		lblNombreUsu.setText(Login.getUser());
-		botonesTablas(tablas);
+		botonesTablas(tablas, labels);
 		registrarEventos();
-		
-		//mostrarTabla();
+
+	}
+	private void animacionBotones(JButton btn, JLabel lbl) {
+		btn.addMouseListener(new MouseAdapter() {
+			public void mouseReleased(MouseEvent e) {
+				btn.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 13));
+			}
+			public void mousePressed(MouseEvent e) {
+				btn.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
+				panelAcciones.setBackground(lbl.getBackground());
+				if(btn.equals(btnRegistro)){
+					for(int i=0; i<1280;i++){
+						panelRegistro.setBounds(panelRegistro.getX(), panelRegistro.getY(), panelRegistro.getWidth()+i, panelRegistro.getHeight());
+					}
+					for(i=7;i<tablas.size();i++) {
+					tablas.get(i).setVisible(false);
+					panelAcciones.setVisible(false);
+					}
+				}else{
+					for(i=7;i<tablas.size();i++) {
+						tablas.get(i).setVisible(true);
+						panelAcciones.setVisible(true);
+						}
+				}
+			}
+			public void mouseExited(MouseEvent e) {
+				btn.setBackground(SystemColor.controlDkShadow);
+			}
+			public void mouseEntered(MouseEvent e) {
+				btn.setBackground(SystemColor.DARK_GRAY);
+			}
+		});
 	}
 	private void animacionBotones(JButton btn) {
 		btn.addMouseListener(new MouseAdapter() {
-
 			public void mouseReleased(MouseEvent e) {
-				btn.setFont(btnDocentes.getFont());
+				btn.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 13));
 			}
-
 			public void mousePressed(MouseEvent e) {
 				btn.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
-				if(btn.equals(btnAlumnos)){
-					panelAcciones.setBackground(new Color(0, 114, 17));
-					btnAlumnos.setBackground(panelAcciones.getBackground());
-				}
 				
 			}
-
 			public void mouseExited(MouseEvent e) {
-				if(btn.getBackground() == panelAcciones.getBackground()){
-					return;
-				}
-				if(btn.equals(btnAlumnos) && btnAlumnos.getBackground() != panelAcciones.getBackground()){
-					btnAlumnos.setBackground(SystemColor.controlDkShadow);
-					}else{
-						btn.setBackground(SystemColor.controlDkShadow);
-		
-					}
-			}
+				btn.setBackground(SystemColor.controlDkShadow);
 
+			}
 			public void mouseEntered(MouseEvent e) {
-				if(btn.getBackground() == panelAcciones.getBackground()){
-					return;
-				}
 				btn.setBackground(SystemColor.DARK_GRAY);
 			}
-
 		});
-		
 	}
-
 	private void registrarEventos() {
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -461,154 +513,51 @@ public class GestionAlmi extends JFrame {
 			}
 		});
 		menuBar.addMouseMotionListener(new MouseMotionAdapter() {
-
 			public void mouseDragged(MouseEvent e) {
 				GestionAlmi.this.setLocation(e.getXOnScreen()-mx,e.getYOnScreen()-my);
 			}
-		});
-		if(btnAlumnos.isBackgroundSet()){
-			panelAcciones.setBackground(new Color(0, 114, 17));
-			btnAlumnos.setBackground(panelAcciones.getBackground());
-		}else{
-			btnAlumnos.setBackground(SystemColor.controlDkShadow);
-		}
-	//	if(btnAlumnos.hasFocus())
-		
-		animacionBotones(btnAlumnos);
-		animacionBotones(btnCursos);
-		animacionBotones(btnDocentes);
-		animacionBotones(btnNoticia);
-		animacionBotones(btnOpciones);
-		/*
-		btnAlumnos.addMouseListener(new MouseAdapter() {
-
-			public void mouseReleased(MouseEvent e) {
-				btnAlumnos.setFont(btnDocentes.getFont());
-			}
-
-			public void mousePressed(MouseEvent e) {
-				btnAlumnos.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
-				panelAcciones.setBackground(new Color(0, 114, 17));
-				btnAlumnos.setBackground(panelAcciones.getBackground());
-				//if(btnAlumnos.getBackground() != panelAcciones.getBackground)
-
-				//BaseDatos.getBBDD().obtenerDatos("perfiles");
-			}
-
-			public void mouseExited(MouseEvent e) {
-				if(btnAlumnos.getBackground() != panelAcciones.getBackground()){
-				btnAlumnos.setBackground(SystemColor.controlDkShadow);
-				}
-			}
-
-			public void mouseEntered(MouseEvent e) {
-				if(btnAlumnos.getBackground() != panelAcciones.getBackground()){
-					btnAlumnos.setBackground(SystemColor.DARK_GRAY);
-					}
-				
-			}
-
-		});*/
-		btnAsignaturas.addMouseListener(new MouseAdapter() {
-
-			public void mouseReleased(MouseEvent e) {
-				btnAsignaturas.setFont(btnDocentes.getFont());
-				
-			}
-
-			public void mousePressed(MouseEvent e) {
-				btnAsignaturas.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
-				panelAcciones.setBackground(contentPane.getBackground());
-				btnAsignaturas.setBackground(panelAcciones.getBackground());
-
-				
-			}
-
-			public void mouseExited(MouseEvent e) {
-				if(btnAsignaturas.getBackground() != panelAcciones.getBackground()){
-				btnAsignaturas.setBackground(SystemColor.controlDkShadow);
-				}
-			}
-
-			public void mouseEntered(MouseEvent e) {
-				if(btnAsignaturas.getBackground() != panelAcciones.getBackground()){
-					btnAsignaturas.setBackground(SystemColor.controlDkShadow);
-					}
-				
-			}
-
-		});
-		
-		
-		btnRegistro.addMouseListener(new MouseAdapter() {
-
-			public void mouseReleased(MouseEvent e) {
-				btnRegistro.setFont(btnAlumnos.getFont());
-			}
-
-			public void mousePressed(MouseEvent e) {
-				btnRegistro.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
-				
-				for(int i=0; i<1280;i++){
-					panelRegistro.setBounds(panelRegistro.getX(), panelRegistro.getY(), panelRegistro.getWidth()+i, panelRegistro.getHeight());
-				}
-
-			}
-
-			public void mouseExited(MouseEvent e) {
-				btnRegistro.setBackground(SystemColor.controlDkShadow);
-			}
-
-			public void mouseEntered(MouseEvent e) {
-				btnRegistro.setBackground(SystemColor.DARK_GRAY);
-			}
-
-		});
+		});		//BaseDatos.getBBDD().obtenerDatos("perfiles");
 		btnCerrarSesion.addMouseListener(new MouseAdapter() {
-
-			@Override
 			public void mousePressed(MouseEvent e) {
 				GestionAlmi.this.setVisible(false);
 				Login.main(null);
 			}
 		});
 		btnCerrarReg.addMouseListener(new MouseAdapter() {
-
-			
-			@Override
 			public void mousePressed(MouseEvent e) {
 				panelRegistro.setBounds(panelRegistro.getX(), panelRegistro.getY(), 0, panelRegistro.getHeight());
-				
+				panelAcciones.setVisible(true);
 			}
-
 		});
 	}
-	private void botonesTablas(ArrayList<JButton> tablas) {
+	private void botonesTablas(ArrayList<JButton> tablas, ArrayList<JLabel> labels) {
 		
 		for(i=0;i<tablas.size();i++) {
 			tablas.get(i).setBackground(SystemColor.controlDkShadow);
+			tablas.get(i).setFont(new Font(Font.SANS_SERIF, Font.BOLD, 13));
 			tablas.get(i).setHorizontalAlignment(SwingConstants.CENTER);
 			tablas.get(i).setForeground(Color.WHITE);
 			tablas.get(i).setContentAreaFilled(false);
 			tablas.get(i).setBorder(null);
 			tablas.get(i).setOpaque(true);
-			if( i < 7 ){
-				panel.add(tablas.get(i));
-			}else{
-				// Text below image
+			tablas.get(i).setRolloverEnabled(true);
+			tablas.get(i).setFocusPainted(false);
+			if(i<labels.size()){
+				labels.get(i).setOpaque(true);
 
+				panel.add(labels.get(i));
+				animacionBotones(tablas.get(i), labels.get(i));
+			}
+			panel.add(tablas.get(i));	
+			if( i > 6 ){
+				// Text below image
 				tablas.get(i).setVerticalTextPosition(SwingConstants.BOTTOM);
 				// And centred
 
 				tablas.get(i).setHorizontalTextPosition(SwingConstants.CENTER); 
-			panel_1.add(tablas.get(i));
+				animacionBotones(tablas.get(i));
+				panel_1.add(tablas.get(i));
 			}
-			tablas.get(i).setRolloverEnabled(true);
-			tablas.get(i).setFocusPainted(false);
-			
-
 		}
-		
 	}
 }
-
