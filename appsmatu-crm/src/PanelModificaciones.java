@@ -16,6 +16,21 @@ import javax.swing.text.TableView.TableCell;
 
 public class PanelModificaciones extends JPanel {
 	private JTable table;
+	private  DefaultTableModel tableModel;
+
+
+	public DefaultTableModel getTableModel() {
+		return tableModel;
+	}
+
+
+
+
+	public void setTableModel(DefaultTableModel tableModel) {
+		this.tableModel = tableModel;
+	}
+
+
 
 
 	/**
@@ -56,13 +71,14 @@ public class PanelModificaciones extends JPanel {
 		table.setCellSelectionEnabled(true);
 		table.setBounds(0, 0, 845, 565);
 		scrollPane.setViewportView(table);
-		
+/*	
 		try {
 			llenarTabla(BaseDatos.getBBDD().obtenerDatos("perfiles"), table);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 	}
 	
 
@@ -77,11 +93,12 @@ public class PanelModificaciones extends JPanel {
 	}
 	
 	public void llenarTabla(ResultSet rs, JTable table) throws SQLException{
+		BaseDatos.getBBDD().conectar();
         //Create new table model
-        DefaultTableModel tableModel = new DefaultTableModel();
-
+        tableModel = new DefaultTableModel();
         //Retrieve meta data from ResultSet
         ResultSetMetaData metaData = rs.getMetaData();
+
 
         //Get number of columns from meta data
         int columnCount = metaData.getColumnCount();
@@ -105,7 +122,10 @@ public class PanelModificaciones extends JPanel {
         }
 
         //Now add that table model to your table and you are done :D
+        setTableModel(tableModel);
         table.setModel(tableModel);
+        table.setName(rs.getMetaData().getTableName(1));
+        BaseDatos.getBBDD().desconectar();
     }
 
 

@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Panel;
+import java.awt.Rectangle;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,6 +18,7 @@ import javax.swing.JLabel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.JTabbedPane;
 import javax.swing.border.LineBorder;
@@ -29,6 +31,7 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JWindow;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 import com.mysql.fabric.xmlrpc.base.Array;
 
@@ -39,6 +42,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JMenu;
 import java.awt.Component;
 import java.awt.Container;
@@ -56,6 +60,8 @@ import java.awt.geom.RoundRectangle2D;
 import java.awt.event.ActionEvent;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.SoftBevelBorder;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.border.BevelBorder;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -71,14 +77,11 @@ import javax.swing.JPasswordField;
 public class GestionAlmi extends JFrame {
 
 	private JPanel contentPane;
-	private Login login;
 	private Image almi;
-	private BaseDatos bd;
 	private ResultSet rs;
 	private Image circSalir;
 	private Image circMinimizar;
 	private Image clarSalir;
-	private JTable table;
 	private Image clarMinimizar;
 	private JButton btnSalir;
 	private JButton btnMinimizar;
@@ -110,7 +113,6 @@ public class GestionAlmi extends JFrame {
 	private PanelModificaciones panelModificaciones;
 	private JPanel panelAcciones;
 	private JButton btnEnviar;
-	private JButton btnLimpiar;
 	private Image buscar;
 	private Image nuevo;
 	private Image modificar;
@@ -126,8 +128,10 @@ public class GestionAlmi extends JFrame {
 	private JButton btnNuevo;
 	private JButton btnModificar;
 	private JButton btnEliminar;
+	private JLabel lblFondoReg;
 	private JButton btnSql;
-
+	private Image fondoDegradado;
+	private PanelModificaciones panelito;
 	/**
 	 * Launch the application.
 	 */
@@ -145,7 +149,6 @@ public class GestionAlmi extends JFrame {
 			}
 		});
 	}
-
 	/**
 	 * Create the frame.
 	 */
@@ -178,12 +181,10 @@ public class GestionAlmi extends JFrame {
 		modificarSel = new ImageIcon(getClass().getResource("iconSel.png")).getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);  
 		borrarSel = new ImageIcon(getClass().getResource("deleteSel.png")).getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH); 
 		sqlSel = new ImageIcon(getClass().getResource("sqliconSel.png")).getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH); 
-		/*
-		JPanel authorization = new JPanel();
-		authorization.add(new JLabel ("test"));
-		options.addTab("test",authorization);
-		 */
 
+		fondoDegradado = new ImageIcon(getClass().getResource("fondoReg.jpg")).getImage().getScaledInstance(1280, 720, Image.SCALE_SMOOTH);
+		lblFondoReg = new JLabel();
+		lblFondoReg.setIcon(new ImageIcon(fondoDegradado));
 		menuBar = new JMenuBar();
 		menuBar.setBounds(0, 0, 1280, 35);
 		menuBar.setBorder(BorderFactory.createCompoundBorder(menuBar.getBorder(),BorderFactory.createEmptyBorder(2, 3, 0, 0)));
@@ -339,7 +340,7 @@ public class GestionAlmi extends JFrame {
 		btnRegistro.setBounds(0, 618, 311, 60);
 		lblRegistro = new JLabel();
 		lblRegistro.setBounds(0, 678, 311, 10);
-		lblRegistro.setBackground(new Color(41, 102, 50));
+		lblRegistro.setBackground(new Color(11, 32, 15));
 
 		panelAcciones = new JPanel();
 		panelAcciones.setBorder(null);
@@ -348,7 +349,7 @@ public class GestionAlmi extends JFrame {
 		panelAcciones.setLayout(null);
 		panelAcciones.setBackground(contentPane.getBackground());
 
-		PanelModificaciones panelito = new PanelModificaciones();
+		panelito = new PanelModificaciones();
 		panelito.setBounds(20, 20, 835, 576);
 		panelAcciones.add(panelito);
 
@@ -382,17 +383,12 @@ public class GestionAlmi extends JFrame {
 
 
 		btnEnviar = new JButton("A\u00F1adir");
-		btnEnviar.setForeground(Color.WHITE);
-		btnEnviar.setBackground(new Color(0, 100, 0));
-		btnEnviar.setBounds(669, 632, 90, 28);
+		btnEnviar.setForeground(Color.DARK_GRAY);
+		btnEnviar.setBackground(Color.LIGHT_GRAY);
+		btnEnviar.setBounds(765, 633, 90, 28);
 		panelAcciones.add(btnEnviar);
 		tablas = new ArrayList<JButton>();
 		labels = new ArrayList<JLabel>();
-		btnLimpiar = new JButton("Limpiar");
-		btnLimpiar.setForeground(Color.WHITE);
-		btnLimpiar.setBackground(new Color(178, 34, 34));
-		btnLimpiar.setBounds(771, 632, 90, 28);
-		panelAcciones.add(btnLimpiar);
 
 
 		btnBuscar.setIcon(new ImageIcon(buscar));
@@ -426,7 +422,7 @@ public class GestionAlmi extends JFrame {
 		tablas.add(9, btnModificar);
 		tablas.add(10, btnEliminar);
 		tablas.add(11, btnSql);
-		
+
 		labels.add(0, lblAlumnos);
 		labels.add(1, lblAsignaturas);
 		labels.add(2, lblCursos);
@@ -435,8 +431,7 @@ public class GestionAlmi extends JFrame {
 		labels.add(5, lblOpciones);
 		labels.add(6, lblRegistro);
 
-		table = new JTable();
-
+		panelRegistro.add(lblFondoReg);
 		btnCerrarSesion.setContentAreaFilled(false);
 		btnCerrarSesion.setBorder(null);
 		btnCerrarSesion.setOpaque(true);
@@ -452,21 +447,27 @@ public class GestionAlmi extends JFrame {
 				btn.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 13));
 			}
 			public void mousePressed(MouseEvent e) {
-				btn.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
-				panelAcciones.setBackground(lbl.getBackground());
 				if(btn.equals(btnRegistro)){
+					panelRegistro.setVisible(true);
+					lblFondoReg.setVisible(true);
 					for(int i=0; i<1280;i++){
 						panelRegistro.setBounds(panelRegistro.getX(), panelRegistro.getY(), panelRegistro.getWidth()+i, panelRegistro.getHeight());
+						lblFondoReg.setBounds(0, 0, panelRegistro.getWidth()+i, panelRegistro.getHeight());
 					}
 					for(i=7;i<tablas.size();i++) {
-					tablas.get(i).setVisible(false);
-					panelAcciones.setVisible(false);
+						tablas.get(i).setVisible(false);
+						panelAcciones.setVisible(false);
 					}
 				}else{
-					for(i=7;i<tablas.size();i++) {
+					for(i=0;i<tablas.size();i++) {
 						tablas.get(i).setVisible(true);
 						panelAcciones.setVisible(true);
-						}
+					}
+					panelRegistro.setVisible(false);
+					lblFondoReg.setVisible(false);
+					btn.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
+					panelAcciones.setBackground(lbl.getBackground());
+					mostrarDatos(btn.getText());
 				}
 			}
 			public void mouseExited(MouseEvent e) {
@@ -477,6 +478,7 @@ public class GestionAlmi extends JFrame {
 			}
 		});
 	}
+
 	private void animacionBotones(JButton btn) {
 		btn.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent e) {
@@ -484,7 +486,18 @@ public class GestionAlmi extends JFrame {
 			}
 			public void mousePressed(MouseEvent e) {
 				btn.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
-				
+				if(btn.equals(btnNuevo)){
+					System.out.println("plakaplaka");
+					panelito.getTable().setCellSelectionEnabled(true);
+					panelito.getTableModel().addRow(new Vector<>());
+					panelito.getTable().editCellAt(panelito.getTableModel().getRowCount()-1,0);
+					panelito.getTable().scrollRectToVisible(new Rectangle(panelito.getTable().getCellRect(panelito.getTableModel().getRowCount()-1,0, true)));
+					panelito.getTable().requestFocus();
+				}
+				if(btn.equals(btnEliminar)){
+					eliminarRegistro(btn);
+				}
+
 			}
 			public void mouseExited(MouseEvent e) {
 				btn.setBackground(SystemColor.controlDkShadow);
@@ -516,7 +529,7 @@ public class GestionAlmi extends JFrame {
 			public void mouseDragged(MouseEvent e) {
 				GestionAlmi.this.setLocation(e.getXOnScreen()-mx,e.getYOnScreen()-my);
 			}
-		});		//BaseDatos.getBBDD().obtenerDatos("perfiles");
+		});		
 		btnCerrarSesion.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				GestionAlmi.this.setVisible(false);
@@ -527,11 +540,181 @@ public class GestionAlmi extends JFrame {
 			public void mousePressed(MouseEvent e) {
 				panelRegistro.setBounds(panelRegistro.getX(), panelRegistro.getY(), 0, panelRegistro.getHeight());
 				panelAcciones.setVisible(true);
+				for(i=0;i<tablas.size();i++) {
+					tablas.get(i).setVisible(true);
+					panelAcciones.setVisible(true);
+				}
 			}
 		});
+
+		btnModificar.addActionListener(new ActionListener() {
+			
+			
+			public void actionPerformed(ActionEvent e) {
+				BaseDatos.getBBDD().conectar();
+				
+				
+				int col[] = panelito.getTable().getSelectedColumns();
+				int row[] = panelito.getTable().getSelectedRows();
+				
+				for(i=0;i<col.length;i++){
+				String columna = panelito.getTable().getColumnName(col[i]);
+				String valor = panelito.getTable().getValueAt(panelito.getTable().getSelectedRow(), col[i]).toString();
+				String idTabla = panelito.getTable().getModel().getColumnName(0);
+				String id = panelito.getTable().getModel().getValueAt(panelito.getTable().getSelectedRow(), 0).toString();
+				
+				System.out.println(idTabla+id);
+				BaseDatos.getBBDD().modificarDatos(panelito.getTable(), columna, valor, idTabla, id);
+				}
+				
+				/*String idTabla = "";
+				int id = -1;
+				panelModificaciones = new PanelModificaciones();
+				String tablaNom = new String();
+				rs=BaseDatos.getBBDD().obtenerDatos(panelito.getTable());
+				try {
+					rs.first();
+					tablaNom = rs.getMetaData().getTableName(1);
+					idTabla = rs.getMetaData().getColumnName(1);
+					id = rs.getInt(panelito.getTable().getSelectedRow());
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+
+				System.out.println(tablaNom+idTabla+" "+id);
+				String columna = panelito.getTable().getColumnName(panelito.getTable().getSelectedColumn());
+				String valor = panelito.getTable().getValueAt(panelito.getTable().getSelectedRow(), panelito.getTable().getSelectedColumn()).toString();
+*/
+				
+				BaseDatos.getBBDD().desconectar();
+			}
+		});
+		btnEnviar.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				nuevoRegistro(btnAlumnos);
+				
+			}
+		});
+
+		
+	}
+	//ELIMINA EL REGISTO DE LA CELDA SELECCIONADA
+	protected void eliminarRegistro(JButton btn) {
+		BaseDatos.getBBDD().conectar();
+		if(panelito.getTable().getSelectedRows() != null){
+			int answer = JOptionPane.showConfirmDialog(new JOptionPane(), "¿Está seguro que desea eliminar la fila completa?");
+
+			if(answer==0){
+				panelModificaciones = new PanelModificaciones();
+				String tablaNom = new String();
+				rs=BaseDatos.getBBDD().obtenerDatos(panelito.getTable());
+				try {
+					rs.first();
+					tablaNom = rs.getMetaData().getTableName(1);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println(tablaNom);
+				String columna = panelito.getTable().getColumnName(panelito.getTable().getSelectedColumn());
+				String valor = panelito.getTable().getValueAt(panelito.getTable().getSelectedRow(), panelito.getTable().getSelectedColumn()).toString();
+				BaseDatos.getBBDD().borrarDatos(columna, valor, tablaNom);
+				mostrarDatos(btn.getText());
+				BaseDatos.getBBDD().desconectar();
+			}
+		}
+		
+	}
+	//AÑADIR REGISTRO
+		protected void nuevoRegistro(JButton btn) {
+			BaseDatos.getBBDD().conectar();
+				
+					panelModificaciones = new PanelModificaciones();
+					String tablaNom = new String();
+					rs=BaseDatos.getBBDD().obtenerDatos(panelito.getTable());
+					try {
+						rs.first();
+						tablaNom = rs.getMetaData().getTableName(1);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					System.out.println(tablaNom);
+					String columna = panelito.getTable().getColumnName(panelito.getTable().getEditingColumn());
+					String valor = panelito.getTable().getValueAt(panelito.getTable().getSelectedRow(), panelito.getTable().getSelectedColumn()).toString();
+					BaseDatos.getBBDD().insertarDatos(columna, valor, tablaNom);
+					mostrarDatos(btn.getText());
+					BaseDatos.getBBDD().desconectar();
+				
+			
+			
+		}
+	protected void mostrarDatos(String nombreTabla) {
+		BaseDatos.getBBDD().conectar();
+
+		switch (nombreTabla) {
+
+		case "Alumnos": System.out.println("esta es la llamada alumo");
+		try {
+			panelito.llenarTabla(BaseDatos.getBBDD().getAlumnos(), panelito.getTable());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		break;
+
+		case "Asignaturas": System.out.println("esta es la llamada asignatur");
+		try {
+			panelito.llenarTabla(BaseDatos.getBBDD().getAsignaturas(), panelito.getTable());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		break;
+
+		case "Cursos": System.out.println("esta es la llamada curs");
+		try {
+			panelito.llenarTabla(BaseDatos.getBBDD().getCursos(), panelito.getTable());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+		break;
+		case "Docentes": System.out.println("esta es la llamada doce");
+		try {
+			panelito.llenarTabla(BaseDatos.getBBDD().getDocentes(), panelito.getTable());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		break;
+
+		case "Noticias": System.out.println("esta es la llamada noti");
+		try {
+			panelito.llenarTabla(BaseDatos.getBBDD().getNoticias(), panelito.getTable());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		break;
+
+		case "Más opciones...": System.out.println("esta es la llamada masop");
+		break;
+
+		case "Registrar Usuario": System.out.println("esta es la llamada regis");
+		break;
+
+		default:
+			break;
+		}
+		BaseDatos.getBBDD().desconectar();
+		
 	}
 	private void botonesTablas(ArrayList<JButton> tablas, ArrayList<JLabel> labels) {
-		
+
 		for(i=0;i<tablas.size();i++) {
 			tablas.get(i).setBackground(SystemColor.controlDkShadow);
 			tablas.get(i).setFont(new Font(Font.SANS_SERIF, Font.BOLD, 13));
@@ -544,16 +727,13 @@ public class GestionAlmi extends JFrame {
 			tablas.get(i).setFocusPainted(false);
 			if(i<labels.size()){
 				labels.get(i).setOpaque(true);
-
 				panel.add(labels.get(i));
 				animacionBotones(tablas.get(i), labels.get(i));
 			}
 			panel.add(tablas.get(i));	
 			if( i > 6 ){
-				// Text below image
+				// PONER TEXTO DEBAJO DEL ICONO Y CENTRARLO
 				tablas.get(i).setVerticalTextPosition(SwingConstants.BOTTOM);
-				// And centred
-
 				tablas.get(i).setHorizontalTextPosition(SwingConstants.CENTER); 
 				animacionBotones(tablas.get(i));
 				panel_1.add(tablas.get(i));

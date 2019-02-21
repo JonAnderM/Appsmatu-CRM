@@ -17,7 +17,7 @@ public class BaseDatos {
 
 	//CONSTRUCTORES
 	BaseDatos() {
-		cadenaConexion="jdbc:mysql://localhost:33066/sara_baras?verifyServerCertificate=false&useSSL=true&zeroDateTimeBehavior=convertToNull";
+		cadenaConexion="jdbc:mysql://localhost:33066/sara_baras1?verifyServerCertificate=false&useSSL=true&zeroDateTimeBehavior=convertToNull";
 		//cadenaConexion="jdbc:mysql://www.db4free.net:3306/sara_baras?verifyServerCertificate=false&useSSL=true&zeroDateTimeBehavior=convertToNull";
 		driver="com.mysql.jdbc.Driver";
 		try {
@@ -41,18 +41,21 @@ public class BaseDatos {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 	}
 
-	public ResultSet obtenerDatos(String nombreTabla){
+	public ResultSet obtenerDatos(JTable tabla){
 		java.sql.PreparedStatement sentencia;
 		//String strSent="SELECT * FROM asignatura INNER JOIN perfiles ON perfiles.idPerfil=asignatura.docente WHERE perfiles.Nombre LIKE 'Virginia'";
-		String strSent="SELECT * FROM perfiles WHERE docente IS false";
-		conectar();
+		String strSent="SELECT * FROM perfiles";
 
 		try {
+			
 			sentencia=cn.prepareStatement(strSent, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			//sentencia.setString(1, tabla.getName());
 			//sentencia.setString(1, nombreTabla);
 			rs=sentencia.executeQuery();
+			System.out.println(rs);
 			return rs;
 
 		} catch (SQLException e) {
@@ -63,30 +66,13 @@ public class BaseDatos {
 		return null;
 	}
 
-	public void insertarDatos(Perfil perfil){
-		java.sql.PreparedStatement preparedStmt;
-		String strSent="INSERT INTO perfiles VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+	public void insertarDatos(String columna, String valor, String tabla){
 
+		java.sql.PreparedStatement preparedStmt;
+		String strSent="INSERT INTO "+tabla+" ("+columna+") VALUES ("+valor+")";
+		System.out.println(strSent);
 		try {
 			preparedStmt = cn.prepareStatement(strSent);
-			preparedStmt.setString(1, perfil.getNombre());
-			preparedStmt.setString(2, perfil.getApellido());
-			preparedStmt.setString(3, perfil.getDni());
-			preparedStmt.setString(4, perfil.getNacimiento());
-			preparedStmt.setInt(5, perfil.getProvincia());
-			preparedStmt.setString(6, perfil.getGenero());
-			preparedStmt.setInt(7, perfil.getTelefono());
-			preparedStmt.setString(8, perfil.getCalle());
-			preparedStmt.setString(9, perfil.getAvatar());
-			preparedStmt.setBoolean(10, perfil.isDocente());
-			preparedStmt.setBoolean(11, perfil.isDelegado());
-			preparedStmt.setBoolean(12, perfil.isTutor());
-			preparedStmt.setInt(13, perfil.getSueldo());
-			preparedStmt.setString(14, perfil.getUsuario());
-			preparedStmt.setString(15, perfil.getContraseña());
-			preparedStmt.setString(16, perfil.getEmail());
-			preparedStmt.setInt(17, perfil.getIdPerfil());
-
 			preparedStmt.execute();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Compruebe que los datos estan insertados correctamente");
@@ -95,16 +81,69 @@ public class BaseDatos {
 		}
 
 
-	}
 
-	public void modificarDatos(Perfil perfil){
+	}
+	public void modificarDatos(JTable tabla, String columna, String valor, String idTabla, String id){
+
 		java.sql.PreparedStatement preparedStmt;
-		String strSent="UPDATE perfiles SET nombre = ?, apellido = ?, dni = ?, nacimiento = ?, provincia = ?, genero = ?, telefono = ?, Calle = ?, avatar = ?, docente = ?, delegado = ?, tutor = ?, sueldo = ?, usuario = ?, password = ?, email = ? WHERE idPerfil = ?";
+
+       
+
+                    String sql = "UPDATE "+tabla.getName()+" SET "+columna+"='"+valor+"' WHERE "+idTabla+"='"+id+"'";
+                    
+                    try {
+						preparedStmt=cn.prepareStatement(sql);
+						preparedStmt.execute();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                    
+                    System.out.println(sql);
+
+
+
+            
+
+        
+	}/*
+	public void modificarDatos(JTable tabla, String columna, String Valor, String idTabla, String id){
+
+		java.sql.PreparedStatement preparedStmt;
+		DefaultTableModel dtm01 = (DefaultTableModel) tabla.getModel();
+
+        String sd0 = "";
+        for (int i = 1; i < dtm01.getColumnCount(); i++) {
+
+            //  System.out.println(dtm01.getColumnName(1));
+            for (int j = 0; j < dtm01.getRowCount(); j++) {
+                try {
+                    sd0 = dtm01.getValueAt(j, i).toString();
+
+                    String sql = "UPDATE "+tabla.getName()+" SET "+dtm01.getColumnName(i)+"='"+sd0+"' WHERE "+obtenerDatos(tabla).getString(0)+"='"+dtm01.getValueAt(j, 0).toString()+"'";
+                    
+                    preparedStmt=cn.prepareStatement(sql);
+                    preparedStmt.execute();
+                    System.out.println(sql);
+                } catch (SQLException ex) {
+                    // Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+
+            }
+
+        }
+	}
+	*/
+/*
+	public void modificarDatos(String columna, String valor, String tabla){
+		java.sql.PreparedStatement preparedStmt;
+		String strSent="UPDATE ? SET nombre = ?, apellido = ?, dni = ?, nacimiento = ?, provincia = ?, genero = ?, telefono = ?, Calle = ?, avatar = ?, docente = ?, delegado = ?, tutor = ?, sueldo = ?, usuario = ?, password = ?, email = ? WHERE idPerfil = ?";
 
 		try {
 			preparedStmt = cn.prepareStatement(strSent);
-			preparedStmt.setString(1, perfil.getNombre());
-			preparedStmt.setString(2, perfil.getApellido());
+			preparedStmt.setString(1, tabla.getName());
+			preparedStmt.setString(2, tabla.getValueAt(row, column));
 			preparedStmt.setString(3, perfil.getDni());
 			preparedStmt.setString(4, perfil.getNacimiento());
 			preparedStmt.setInt(5, perfil.getProvincia());
@@ -131,15 +170,18 @@ public class BaseDatos {
 
 
 	}
-	public void borrarDatos(String id) {
+	*/
+	public void borrarDatos(String columna, String valor, String tabla) {
+
+
 		java.sql.PreparedStatement preparedStmt;
-		String strSent="DELETE FROM cliente WHERE Clave = ?";
+		String strSent="DELETE FROM "+tabla+" WHERE "+columna+" = ?";
 
 
 		try {
 			preparedStmt = cn.prepareStatement(strSent);
-			preparedStmt.setString(1, id);
 
+			preparedStmt.setString(1, valor);
 			preparedStmt.execute();
 
 		} catch (SQLException e) {
@@ -154,7 +196,7 @@ public class BaseDatos {
 		java.sql.PreparedStatement sentencia;
 		String pass = new String();
 		String strSent="SELECT perfiles.password FROM perfiles WHERE perfiles.usuario = ? AND perfiles.docente = true";
-
+		
 		try {
 			sentencia = cn.prepareStatement(strSent, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			sentencia.setString(1, user.toString());
@@ -168,6 +210,7 @@ public class BaseDatos {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		return pass.equals(pwd);
 
 
@@ -186,21 +229,115 @@ public class BaseDatos {
 
 	}
 
-	public void getAlumnos() {
-		// TODO Auto-generated method stub
+	public ResultSet getAlumnos() {
+			java.sql.PreparedStatement sentencia;
+			//String strSent="SELECT * FROM asignatura INNER JOIN perfiles ON perfiles.idPerfil=asignatura.docente WHERE perfiles.Nombre LIKE 'Virginia'";
+			String strSent="SELECT idPerfil, nombre, apellido, dni, telefono, calle, usuario, email FROM perfiles WHERE docente IS false";
+	
+			
+			try {
+				sentencia=cn.prepareStatement(strSent, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+				//sentencia.setString(1, nombreTabla);
+				rs=sentencia.executeQuery();
+				return rs;
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
+			return null;
+		
 		
 	}
-	public void getAsignaturas(){
-		
+	public ResultSet getAsignaturas(){
+		java.sql.PreparedStatement sentencia;
+		//String strSent="SELECT * FROM asignatura INNER JOIN perfiles ON perfiles.idPerfil=asignatura.docente WHERE perfiles.Nombre LIKE 'Virginia'";
+		String strSent="SELECT idAsignatura, cursos.nombre AS cursos, asignatura.nombre AS asignaturas, dias.nombre, cursoasignatura.hora  FROM cursos INNER JOIN cursoasignatura ON cursos.idCurso=cursoasignatura.curso INNER JOIN asignatura ON asignatura.idAsignatura=cursoasignatura.asignatura INNER JOIN dias ON dias.idDia=cursoasignatura.dia ORDER BY dias.idDia";
+
+
+		try {
+			sentencia=cn.prepareStatement(strSent, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			//sentencia.setString(1, nombreTabla);
+			rs=sentencia.executeQuery();
+			return rs;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+		return null;
+	
+	
 	}
-	public void getCursos(){
-		
+	public ResultSet getCursos(){
+		java.sql.PreparedStatement sentencia;
+		//String strSent="SELECT * FROM asignatura INNER JOIN perfiles ON perfiles.idPerfil=asignatura.docente WHERE perfiles.Nombre LIKE 'Virginia'";
+		String strSent="SELECT idCurso, cursos.nombre, cursos.precio, cursos.comienzo, cursos.fin, cursos.horas, modalidades.nombre, aulas.nombre FROM cursos INNER JOIN modalidades ON cursos.modalidad=modalidades.idModalidad INNER JOIN aulas ON aulas.idAula=cursos.aula";
+
+
+		try {
+			sentencia=cn.prepareStatement(strSent, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			//sentencia.setString(1, nombreTabla);
+			rs=sentencia.executeQuery();
+			return rs;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+		return null;
+	
+	
 	}
-	public void getNoticias(){
-		
+	public ResultSet getNoticias(){
+		java.sql.PreparedStatement sentencia;
+		//String strSent="SELECT * FROM asignatura INNER JOIN perfiles ON perfiles.idPerfil=asignatura.docente WHERE perfiles.Nombre LIKE 'Virginia'";
+		String strSent="SELECT idNoticia, fecha, titulo, texto,autor FROM noticias";
+
+
+		try {
+			sentencia=cn.prepareStatement(strSent, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			//sentencia.setString(1, nombreTabla);
+			rs=sentencia.executeQuery();
+			return rs;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+		return null;
+	
+	
 	}
-	public void getDocentes(){
-		
+	public ResultSet getDocentes(){
+		java.sql.PreparedStatement sentencia;
+		//String strSent="SELECT * FROM asignatura INNER JOIN perfiles ON perfiles.idPerfil=asignatura.docente WHERE perfiles.Nombre LIKE 'Virginia'";
+		String strSent="SELECT nombre, apellido, dni, telefono, calle, sueldo, usuario, email FROM perfiles WHERE docente IS true";
+
+
+		try {
+			sentencia=cn.prepareStatement(strSent, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			//sentencia.setString(1, nombreTabla);
+			rs=sentencia.executeQuery();
+			return rs;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+		return null;
+	
+	
 	}
 	public void setUser(String id){
 		
