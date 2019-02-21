@@ -1,6 +1,7 @@
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.SystemColor;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -22,17 +23,9 @@ public class PanelModificaciones extends JPanel {
 	public DefaultTableModel getTableModel() {
 		return tableModel;
 	}
-
-
-
-
 	public void setTableModel(DefaultTableModel tableModel) {
 		this.tableModel = tableModel;
 	}
-
-
-
-
 	/**
 	 * Create the panel.
 	 */
@@ -42,15 +35,11 @@ public class PanelModificaciones extends JPanel {
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 0, 835, 575);
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		add(scrollPane);
 		
 		table = new JTable();
-		
-	
-	
-
 		
 		table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer()
 		{
@@ -65,25 +54,13 @@ public class PanelModificaciones extends JPanel {
 		        return c;
 		    }
 		});
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
 		table.setFillsViewportHeight(true);
 		table.setColumnSelectionAllowed(true);
 		table.setCellSelectionEnabled(true);
 		table.setBounds(0, 0, 845, 565);
 		scrollPane.setViewportView(table);
-/*	
-		try {
-			llenarTabla(BaseDatos.getBBDD().obtenerDatos("perfiles"), table);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
 	}
-	
-
-	
-
 	public JTable getTable() {
 		return table;
 	}
@@ -94,34 +71,22 @@ public class PanelModificaciones extends JPanel {
 	
 	public void llenarTabla(ResultSet rs, JTable table) throws SQLException{
 		BaseDatos.getBBDD().conectar();
-        //Create new table model
         tableModel = new DefaultTableModel();
-        //Retrieve meta data from ResultSet
         ResultSetMetaData metaData = rs.getMetaData();
-
-
-        //Get number of columns from meta data
         int columnCount = metaData.getColumnCount();
-
-        //Get all column names from meta data and add columns to table model
         for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++){
             tableModel.addColumn(metaData.getColumnLabel(columnIndex));
         }
 
-        //Create array of Objects with size of column count from meta data
+        
         Object[] row = new Object[columnCount];
 
-        //Scroll through result set
         while (rs.next()){
-            //Get object from column with specific index of result set to array of objects
             for (int i = 0; i < columnCount; i++){
                 row[i] = rs.getObject(i+1);
             }
-            //Now add row to table model with that array of objects as an argument
             tableModel.addRow(row);
         }
-
-        //Now add that table model to your table and you are done :D
         setTableModel(tableModel);
         table.setModel(tableModel);
         table.setName(rs.getMetaData().getTableName(1));

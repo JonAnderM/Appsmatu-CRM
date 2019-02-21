@@ -30,7 +30,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JWindow;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import com.mysql.fabric.xmlrpc.base.Array;
@@ -71,6 +73,7 @@ import java.awt.Dialog.ModalExclusionType;
 import java.awt.Window.Type;
 import javax.swing.JLayeredPane;
 import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 
 
@@ -105,7 +108,7 @@ public class GestionAlmi extends JFrame {
 	private JLabel lblNoticia;
 	private JLabel lblRegistro;
 	private JPanel panel;
-	private JPasswordField passwordField;
+	private JTextField passwordField;
 	private JPanel panelRegistro;
 	private JButton btnCerrarReg;
 	private ArrayList<JButton> tablas;
@@ -132,6 +135,11 @@ public class GestionAlmi extends JFrame {
 	private JButton btnSql;
 	private Image fondoDegradado;
 	private PanelModificaciones panelito;
+	private JTextField txtBuscar;
+	private JPanel panelBuscar;
+	private JLabel lblUsu;
+	private JPasswordField passwordField_1;
+	private JLabel lblPassword;
 	/**
 	 * Launch the application.
 	 */
@@ -268,25 +276,38 @@ public class GestionAlmi extends JFrame {
 
 		JLabel lblPerfilUsu = new JLabel("Perfil");
 		lblPerfilUsu.setForeground(SystemColor.menu);
-		lblPerfilUsu.setBounds(150, 201, 82, 34);
+		lblPerfilUsu.setBounds(220, 210, 82, 34);
 		panelRegistro.add(lblPerfilUsu);
 
 		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(150, 235, 236, 25);
+		comboBox.setBounds(220, 240, 220, 25);
 		panelRegistro.add(comboBox);
 
-		passwordField = new JPasswordField();
-		passwordField.setBounds(364, 438, 236, 20);
+		lblUsu = new JLabel("Nickname");
+		lblUsu.setForeground(SystemColor.menu);
+		lblUsu.setBounds(220, 270, 220, 34);
+		panelRegistro.add(lblUsu);
+
+		passwordField = new JTextField();
+		passwordField.setBounds(220, 300, 220, 20);
 		panelRegistro.add(passwordField);
+
+		lblPassword = new JLabel("Password");
+		lblPassword.setForeground(SystemColor.menu);
+		lblPassword.setBounds(220, 320, 220, 34);
+		panelRegistro.add(lblPassword);
+
+		passwordField_1 = new JPasswordField();
+		passwordField_1.setBounds(220, 350, 220, 20);
+		panelRegistro.add(passwordField_1);
 
 		btnCerrarReg = new JButton("X");
 		btnCerrarReg.setFont(new Font("Dialog", Font.BOLD, 24));
 		btnCerrarReg.setForeground(Color.WHITE);
 		btnCerrarReg.setBounds(900, 0, 55, 51);
-		btnCerrarReg.setBackground(SystemColor.controlDkShadow);
 		btnCerrarReg.setContentAreaFilled(false);
 		btnCerrarReg.setBorder(null);
-		btnCerrarReg.setOpaque(true);
+		btnCerrarReg.setOpaque(false);
 		panelRegistro.add(btnCerrarReg);
 
 		panel = new JPanel();
@@ -349,7 +370,16 @@ public class GestionAlmi extends JFrame {
 		panelAcciones.setLayout(null);
 		panelAcciones.setBackground(contentPane.getBackground());
 
+		panelBuscar = new JPanel();
+		panelBuscar.setBounds(635, 0, 245, 45);
+		panelAcciones.add(panelBuscar);
+
+		txtBuscar = new JTextField();
+		panelBuscar.add(txtBuscar);
+		txtBuscar.setColumns(10);
+
 		panelito = new PanelModificaciones();
+		panelito.getTable().setLocation(48, 11);
 		panelito.setBounds(20, 20, 835, 576);
 		panelAcciones.add(panelito);
 
@@ -430,6 +460,8 @@ public class GestionAlmi extends JFrame {
 		labels.add(4, lblNoticia);
 		labels.add(5, lblOpciones);
 		labels.add(6, lblRegistro);
+		panelBuscar.setVisible(false);
+		panelBuscar.setBackground(SystemColor.controlDkShadow);
 
 		panelRegistro.add(lblFondoReg);
 		btnCerrarSesion.setContentAreaFilled(false);
@@ -439,8 +471,9 @@ public class GestionAlmi extends JFrame {
 		lblNombreUsu.setText(Login.getUser());
 		botonesTablas(tablas, labels);
 		registrarEventos();
-
 	}
+
+	//ESTO ES PARA LOS BOTONES DEL PANEL IZQUIERDO
 	private void animacionBotones(JButton btn, JLabel lbl) {
 		btn.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent e) {
@@ -478,7 +511,7 @@ public class GestionAlmi extends JFrame {
 			}
 		});
 	}
-
+	//ESTO ES PARA LOS BOTONES DEL PANEL DERCHO
 	private void animacionBotones(JButton btn) {
 		btn.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent e) {
@@ -497,11 +530,9 @@ public class GestionAlmi extends JFrame {
 				if(btn.equals(btnEliminar)){
 					eliminarRegistro(btn);
 				}
-
 			}
 			public void mouseExited(MouseEvent e) {
 				btn.setBackground(SystemColor.controlDkShadow);
-
 			}
 			public void mouseEntered(MouseEvent e) {
 				btn.setBackground(SystemColor.DARK_GRAY);
@@ -509,6 +540,32 @@ public class GestionAlmi extends JFrame {
 		});
 	}
 	private void registrarEventos() {
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(!panelBuscar.isVisible()) {
+					panelBuscar.setVisible(true);
+				}else {
+					panelBuscar.setVisible(false);
+				}
+			}
+		});
+		txtBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JTable table = panelito.getTable();
+				String value = txtBuscar.getText();
+				for (int row = 0; row <= table.getRowCount() - 1; row++) {
+					for (int col = 0; col <= table.getColumnCount() - 1; col++) {
+						if (value.equals(table.getValueAt(row, col))) {
+							table.scrollRectToVisible(table.getCellRect(row, 0, true));
+							table.setRowSelectionInterval(row, row);
+							for (int i = 0; i <= table.getColumnCount() - 1; i++) {
+								table.getColumnModel().getColumn(i).setCellRenderer(new HighlightRenderer());
+							}
+						}
+					}
+				}
+			}
+		});
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);
@@ -546,65 +603,40 @@ public class GestionAlmi extends JFrame {
 				}
 			}
 		});
-
+		//AQUI GENERAMOS EL UPDATE
 		btnModificar.addActionListener(new ActionListener() {
-			
-			
 			public void actionPerformed(ActionEvent e) {
 				BaseDatos.getBBDD().conectar();
-				
-				
+
+
 				int col[] = panelito.getTable().getSelectedColumns();
 				int row[] = panelito.getTable().getSelectedRows();
-				
+
 				for(i=0;i<col.length;i++){
-				String columna = panelito.getTable().getColumnName(col[i]);
-				String valor = panelito.getTable().getValueAt(panelito.getTable().getSelectedRow(), col[i]).toString();
-				String idTabla = panelito.getTable().getModel().getColumnName(0);
-				String id = panelito.getTable().getModel().getValueAt(panelito.getTable().getSelectedRow(), 0).toString();
-				
-				System.out.println(idTabla+id);
-				BaseDatos.getBBDD().modificarDatos(panelito.getTable(), columna, valor, idTabla, id);
-				}
-				
-				/*String idTabla = "";
-				int id = -1;
-				panelModificaciones = new PanelModificaciones();
-				String tablaNom = new String();
-				rs=BaseDatos.getBBDD().obtenerDatos(panelito.getTable());
-				try {
-					rs.first();
-					tablaNom = rs.getMetaData().getTableName(1);
-					idTabla = rs.getMetaData().getColumnName(1);
-					id = rs.getInt(panelito.getTable().getSelectedRow());
-				} catch (SQLException e1) {
-					e1.printStackTrace();
+					String columna = panelito.getTable().getColumnName(col[i]);
+					String valor = panelito.getTable().getValueAt(panelito.getTable().getSelectedRow(), col[i]).toString();
+					String idTabla = panelito.getTable().getModel().getColumnName(0);
+					String id = panelito.getTable().getModel().getValueAt(panelito.getTable().getSelectedRow(), 0).toString();
+
+					System.out.println(idTabla+id);
+					BaseDatos.getBBDD().modificarDatos(panelito.getTable(), columna, valor, idTabla, id);
 				}
 
-				System.out.println(tablaNom+idTabla+" "+id);
-				String columna = panelito.getTable().getColumnName(panelito.getTable().getSelectedColumn());
-				String valor = panelito.getTable().getValueAt(panelito.getTable().getSelectedRow(), panelito.getTable().getSelectedColumn()).toString();
-*/
-				
 				BaseDatos.getBBDD().desconectar();
 			}
 		});
+		//EJECUTAMOS INSERT INTO
 		btnEnviar.addActionListener(new ActionListener() {
-			
 			public void actionPerformed(ActionEvent arg0) {
 				nuevoRegistro(btnAlumnos);
-				
 			}
 		});
-
-		
 	}
 	//ELIMINA EL REGISTO DE LA CELDA SELECCIONADA
 	protected void eliminarRegistro(JButton btn) {
 		BaseDatos.getBBDD().conectar();
 		if(panelito.getTable().getSelectedRows() != null){
 			int answer = JOptionPane.showConfirmDialog(new JOptionPane(), "¿Está seguro que desea eliminar la fila completa?");
-
 			if(answer==0){
 				panelModificaciones = new PanelModificaciones();
 				String tablaNom = new String();
@@ -624,97 +656,95 @@ public class GestionAlmi extends JFrame {
 				BaseDatos.getBBDD().desconectar();
 			}
 		}
-		
 	}
 	//AÑADIR REGISTRO
-		protected void nuevoRegistro(JButton btn) {
-			BaseDatos.getBBDD().conectar();
-				
-					panelModificaciones = new PanelModificaciones();
-					String tablaNom = new String();
-					rs=BaseDatos.getBBDD().obtenerDatos(panelito.getTable());
-					try {
-						rs.first();
-						tablaNom = rs.getMetaData().getTableName(1);
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					System.out.println(tablaNom);
-					String columna = panelito.getTable().getColumnName(panelito.getTable().getEditingColumn());
-					String valor = panelito.getTable().getValueAt(panelito.getTable().getSelectedRow(), panelito.getTable().getSelectedColumn()).toString();
-					BaseDatos.getBBDD().insertarDatos(columna, valor, tablaNom);
-					mostrarDatos(btn.getText());
-					BaseDatos.getBBDD().desconectar();
-				
-			
-			
+	protected void nuevoRegistro(JButton btn) {
+		int col[] = panelito.getTable().getSelectedColumns();
+		BaseDatos.getBBDD().conectar();
+
+		panelModificaciones = new PanelModificaciones();
+		String tablaNom = new String();
+		rs=BaseDatos.getBBDD().obtenerDatos(panelito.getTable());
+		try {
+			rs.first();
+			tablaNom = rs.getMetaData().getTableName(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
+
+		for(i=0;i<col.length;i++){
+			String columna = panelito.getTable().getColumnName(col[i]);
+			String valor = panelito.getTable().getValueAt(panelito.getTable().getSelectedRow(), col[i]).toString();
+			BaseDatos.getBBDD().insertarDatos(columna, valor, tablaNom);	
+		}
+		mostrarDatos(btn.getText());
+		BaseDatos.getBBDD().desconectar();
+	}
 	protected void mostrarDatos(String nombreTabla) {
 		BaseDatos.getBBDD().conectar();
 
 		switch (nombreTabla) {
 
-		case "Alumnos": System.out.println("esta es la llamada alumo");
-		try {
-			panelito.llenarTabla(BaseDatos.getBBDD().getAlumnos(), panelito.getTable());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		break;
+		case "Alumnos": 
+			try {
+				panelito.llenarTabla(BaseDatos.getBBDD().getAlumnos(), panelito.getTable());
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
 
-		case "Asignaturas": System.out.println("esta es la llamada asignatur");
-		try {
-			panelito.llenarTabla(BaseDatos.getBBDD().getAsignaturas(), panelito.getTable());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		break;
+		case "Asignaturas": 
+			try {
+				panelito.llenarTabla(BaseDatos.getBBDD().getAsignaturas(), panelito.getTable());
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
 
-		case "Cursos": System.out.println("esta es la llamada curs");
-		try {
-			panelito.llenarTabla(BaseDatos.getBBDD().getCursos(), panelito.getTable());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		case "Cursos": 
+			try {
+				panelito.llenarTabla(BaseDatos.getBBDD().getCursos(), panelito.getTable());
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 
-		break;
-		case "Docentes": System.out.println("esta es la llamada doce");
-		try {
-			panelito.llenarTabla(BaseDatos.getBBDD().getDocentes(), panelito.getTable());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		break;
+			break;
+		case "Docentes":
+			try {
+				panelito.llenarTabla(BaseDatos.getBBDD().getDocentes(), panelito.getTable());
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
 
-		case "Noticias": System.out.println("esta es la llamada noti");
-		try {
-			panelito.llenarTabla(BaseDatos.getBBDD().getNoticias(), panelito.getTable());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		break;
+		case "Noticias": 
+			try {
+				panelito.llenarTabla(BaseDatos.getBBDD().getNoticias(), panelito.getTable());
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
 
-		case "Más opciones...": System.out.println("esta es la llamada masop");
-		break;
+		case "Más opciones...":
+			break;
 
-		case "Registrar Usuario": System.out.println("esta es la llamada regis");
-		break;
+		case "Registrar Usuario": 
+			break;
 
 		default:
 			break;
 		}
 		BaseDatos.getBBDD().desconectar();
-		
+
 	}
 	private void botonesTablas(ArrayList<JButton> tablas, ArrayList<JLabel> labels) {
-
+		//PARA DAR ATRIBUTOS A LOS BOTONES DE FORMA GENERICA
 		for(i=0;i<tablas.size();i++) {
 			tablas.get(i).setBackground(SystemColor.controlDkShadow);
 			tablas.get(i).setFont(new Font(Font.SANS_SERIF, Font.BOLD, 13));
@@ -740,4 +770,19 @@ public class GestionAlmi extends JFrame {
 			}
 		}
 	}
+	private class HighlightRenderer extends DefaultTableCellRenderer {
+
+		//ESTA FUNCION COLOREA LA FILA QUE TIENE EL VALOR BUSCADO
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			if(row == table.getSelectedRow()) {
+				setBorder(BorderFactory.createMatteBorder(2, 1, 2, 1, Color.BLACK));
+			}
+			if(!isSelected){
+				c.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.WHITE);
+			}
+			return this;
+		}
+	}
+
 }

@@ -46,10 +46,6 @@ public class Login extends JFrame {
 	private JLabel lblWeb;
 	private JProgressBar progressBar;
 
-
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -64,14 +60,9 @@ public class Login extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
-
 	public static String getUser() {
 		return user;
 	}
-
 	public void setUser(String user) {
 		this.user = user;
 	}
@@ -157,16 +148,10 @@ public class Login extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(txtpnUser.getText() == "" || txtpnPassword.getPassword().toString() == "" || !txtpnUser.isEditable()){
 					JOptionPane.showMessageDialog(null, "No deje campos vacios");
-				/*
-				System.out.println(digest("SHA-256", "Almi123"));
-				System.out.println(String.valueOf(txtpnPassword.getPassword()));
-				System.out.println(digest("SHA-256", String.valueOf(txtpnPassword.getPassword())));
-				 */
 				}else if(login(txtpnUser.getText().toString(), digest("SHA-256", String.valueOf(txtpnPassword.getPassword())))){
 					Login.this.setVisible(false);
 					GestionAlmi.main(null);
 				}
-				
 			}
 		});
 		txtpnUser.addMouseListener(new MouseAdapter() {
@@ -181,8 +166,6 @@ public class Login extends JFrame {
 				}
 			}
 		});
-
-
 		txtpnPassword.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				if(!txtpnPassword.isEditable()){
@@ -195,7 +178,6 @@ public class Login extends JFrame {
 				}
 			}
 		});
-
 		//AQUI SE CONTROLA QUE CADA VEZ QUE SE PULSE EL TABULADOR, ALTERNE EL JTEXTFIELD
 		txtpnUser.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
